@@ -2,19 +2,18 @@ package com.hellocrop.okrbot.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.hellocrop.okrbot.dao.AuthMapper;
-import com.hellocrop.okrbot.dao.DepartmentMapper;
-import com.hellocrop.okrbot.dao.EmployerMapper;
-import com.hellocrop.okrbot.dao.OkrMapper;
+import com.hellocrop.okrbot.dao.*;
 import com.hellocrop.okrbot.entity.JsonString;
 import com.hellocrop.okrbot.entity.okr.Okr;
 import com.hellocrop.okrbot.entity.okr.OkrList;
+import com.hellocrop.okrbot.entity.okr.ProgressRecord;
+import com.hellocrop.okrbot.util.DateUtil;
+import com.hellocrop.okrbot.util.OkrUtil;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author IntoEther-7
@@ -26,6 +25,7 @@ public class OkrService {
 
     private String tenant_access_token;
     private OkrMapper okrMapper = new OkrMapper();
+    private DateUtil dateUtil = new DateUtil();
 
     public void weekReport(String appId, String appSecret) throws Exception {
         // 鉴权
@@ -35,12 +35,42 @@ public class OkrService {
         List<String> userIdxList = getAllEmployee();
 
         // 根据人员获取OKR
-        List<OkrList> okrLists = new LinkedList<>();
+        Map<String, OkrList> okrListMap = new HashMap<>();
         for (String userIdx : userIdxList) {
             JsonString okrsByEmployer = getOkrsByEmployer(userIdx);
             OkrList okrList = deserializationOKR(userIdx, okrsByEmployer);
-            okrLists.add(okrList);
+            okrListMap.put(userIdx, okrList);
         }
+
+        // 新建文档
+        JsonString documentJsonString = new DocumentMapper().newDocument(tenant_access_token,
+                "全员周报（%s）".formatted(dateUtil.string()));
+
+        // 处理OKR数据, 取出进展
+        Map<String, List<ProgressRecord>> map_pgs = new OkrUtil(okrListMap).getMap_pgs();
+
+
+        // 构建进展块
+        Map<String, List<Object>> pgsBlocks = new LinkedHashMap<>();
+        Iterator<Map.Entry<String, List<ProgressRecord>>> entryIterator = map_pgs.entrySet().iterator();
+        while (entryIterator.hasNext()) {
+            Map.Entry<String, List<ProgressRecord>> next = entryIterator.next();
+            pgsBlocks.put(next.getKey(), pgs2block(next.getValue()));
+        }
+
+        // 为每个人构建块
+        Iterator<Map.Entry<String, List<Object>>> iterator = pgsBlocks.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, List<Object>> next = iterator.next();
+            String userIdx = next.getKey();
+            List<Object> userPgs = next.getValue();
+
+            // TODO: 构建一个标题块
+
+            // TODO: 构建后续块
+        }
+
+
         log.info(null);
     }
 
@@ -83,5 +113,28 @@ public class OkrService {
         return new OkrList(userIdx, okrs);
     }
 
-    // 处理OKR数据, 取出O和KR
+    // 获取个人进展转变为block
+    private List<Object> pgs2block(List<ProgressRecord> progressRecords) throws UnirestException,
+            JsonProcessingException {
+        List<Object> blocks = new LinkedList<>();
+
+        ProgressMapper progressMapper = new ProgressMapper();
+        Iterator<ProgressRecord> iterator = progressRecords.iterator();
+        while (iterator.hasNext()) {
+            ProgressRecord next = iterator.next();
+            JsonString progress = progressMapper.getProgress(tenant_access_token, next.getId());
+
+            // 判断时间对不对, 是不是这周的
+            Date before = new Date(Long.parseLong(progress.get("data").get("modify_time").string()));
+            if (dateUtil.inThisWeek(before)) {
+                List<Object> pgsBlock =
+                        JsonString.objectMapper.readValue(JsonString.objectMapper.writeValueAsString(progress.get(
+                                "data").get("content").get("blocks").getNode()), new TypeReference<>() {
+                        });
+                blocks.addAll(pgsBlock);
+            }
+        }
+        return blocks;
+
+    }
 }

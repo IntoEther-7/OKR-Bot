@@ -23,4 +23,5 @@ public class Objective {
     private String progress_report_last_updated_time; // 最后一次编辑备注的时间 毫秒
     private String score_last_updated_time; // 最后一次打分更新时间 毫秒
     private String deadline; // 截止时间 毫秒
+    private List<ProgressRecord> progress_record_list;
 }

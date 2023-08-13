@@ -12,7 +12,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * @project okrbot
  */
 public class DocumentMapper {
-    private final String folderToken = "XfdTf6VPklVbRXdKbkVcdcT8nxf";
+    private final String folderToken = "Pg1BfZ7sOl1gRCdHpm2ckxX0nnd";
 
     /**
      * 返回文档信息Json
@@ -28,9 +28,9 @@ public class DocumentMapper {
         Unirest.setTimeouts(0, 0);
         HttpResponse<String> response = Unirest.post("https://open.feishu.cn/open-apis/docx/v1/documents")
                 .header("Content-Type", "application/x-www-form-urlencoded")
-                .header("Authorization", "Bearer t-g1048dcCO3NZQTWHCNN6FOIYTYUUXF4ZL7WG2XRF")
-                .field("folder_token", "XfdTf6VPklVbRXdKbkVcdcT8nxf")
-                .field("title", "test")
+                .header("Authorization", tenant_access_token)
+                .field("folder_token", folderToken)
+                .field("title", documentName)
                 .asString();
 
         return new JsonString(response.getBody());
