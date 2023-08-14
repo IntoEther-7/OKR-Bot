@@ -29,7 +29,7 @@ public class OkrUtil {
 
     private void filterOkrLists(Map<String, OkrList> okrListMap) {
 
-        // ÒÀ´Î´¦ÀíÃ¿Ò»¸öOkrList
+        // ä¾æ¬¡å¤„ç†æ¯ä¸€ä¸ªOkrList
         Iterator<Map.Entry<String, OkrList>> iterator = okrListMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, OkrList> next = iterator.next();
@@ -41,11 +41,11 @@ public class OkrUtil {
             filterOkrList(next.getValue().getOkr_list(), next.getKey());
             if (next.getValue().getOkr_list().isEmpty()) next.setValue(null);
         }
-        log.info("±éÀú½áÊøÀï");
+        log.info("éå†ç»“æŸé‡Œ");
     }
 
     private void filterOkrList(List<Okr> okrs, String userIdx) {
-        // ÒÀ´Î´¦ÀíÃ¿¸öOkr
+        // ä¾æ¬¡å¤„ç†æ¯ä¸ªOkr
         Iterator<Okr> iterator = okrs.iterator();
         while (iterator.hasNext()) {
             Okr next = iterator.next();
@@ -63,14 +63,14 @@ public class OkrUtil {
     }
 
     private void filterObjectiveList(List<Objective> objectiveList, String userIdx) {
-        // ÒÀ´Î´¦ÀíÃ¿¸öObjective, Èç¹ûObjectiveÃ»ÓĞKR, É¾µôËü
+        // ä¾æ¬¡å¤„ç†æ¯ä¸ªObjective, å¦‚æœObjectiveæ²¡æœ‰KR, åˆ æ‰å®ƒ
         Iterator<Objective> iterator = objectiveList.iterator();
         while (iterator.hasNext()) {
             Objective next = iterator.next();
             if (next.getKr_list().isEmpty()) {
                 iterator.remove();
             } else {
-                // Èç¹ûÓĞprogress_id, ·Å½ømap
+                // å¦‚æœæœ‰progress_id, æ”¾è¿›map
                 map_pgs.get(userIdx).addAll(next.getProgress_record_list());
                 Iterator<KeyResult> keyResultIterator = next.getKr_list().iterator();
                 while (keyResultIterator.hasNext()) {

@@ -26,7 +26,8 @@ public class Block {
     }
 
     /**
-     * block结构封装
+     * block锟结构锟斤拷装
+     *
      * @param type
      * @param block
      * @return

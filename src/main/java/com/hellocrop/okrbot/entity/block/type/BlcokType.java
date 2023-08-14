@@ -6,19 +6,19 @@ package com.hellocrop.okrbot.entity.block.type;
  * @project okrbot
  */
 public enum BlcokType {
-    TEXT("text", 2, "ÎÄ±¾ Block"), HEADING1("heading1", 3, "Ò»¼¶±êÌâ Block"), HEADING2("heading2", 4, "¶ş¼¶±êÌâ Block"),
-    HEADING3("heading3", 5, "Èı¼¶±êÌâ Block"), HEADING4("heading4", 6, "ËÄ¼¶±êÌâ Block"), HEADING5("heading5", 7, "Îå¼¶±êÌâ " +
-            "Block"), HEADING6("heading6", 8, "Áù¼¶±êÌâ Block"), HEADING7("heading7", 9, "Æß¼¶±êÌâ Block"), HEADING8(
-            "heading8", 10, "°Ë¼¶±êÌâ Block"), HEADING9("heading9", 11, "¾Å¼¶±êÌâ Block"), BULLET("bullet", 12,
-            "ÎŞĞòÁĞ±í" + " Block"), ORDERED("ordered", 13, "ÓĞĞòÁĞ±í Block"), CODE("code", 14, "´úÂë¿é Block"), QUOTE("quote",
-            15, "ÒıÓÃ " + "Block"), EQUATION("equation", 999, "¹«Ê½ Block"), TODO("todo", 17, "´ı°ìÊÂÏî Block"), BITABLE(
-            "bitable", 18, "¶àÎ¬±í¸ñ Block"), CALLOUT("callout", 19, "¸ßÁÁ¿é Block"), CHAT_CARD("chat_card", 20,
-            "ÈºÁÄ¿¨Æ¬ Block"), DIVIDER("divider", 22, "·Ö¸îÏß Block"), FILE("file", 23, "ÎÄ¼ş Block"), GRID("grid", 24,
-            "·ÖÀ¸ " + "Block"), IFRAME("iframe", 26, "ÄÚÇ¶ Block"), IMAGE("image", 27, "Í¼Æ¬ Block"), ISV("isv", 999,
-            "Èı·½ " + "Block"), ADD_ONS("add_ons", 999, "Add-ons"), SHEET("sheet", 30, "µç×Ó±í¸ñ Block"), TABLE("table", 31
-            , "±í¸ñ " + "Block"), QUOTE_CONTAINER("quote_container", 34, "ÒıÓÃÈİÆ÷ Block"), OKR("okr", 36,
-            "OKR " + "Block" + "£¬½ö¿ÉÔÚÊ¹ÓÃ" + " " + "user_access_token Ê±´´½¨"), COMMENT_IDS("comment_ids", 999, "ÆÀÂÛ id " +
-            "ÁĞ±í£¬Ê¾ÀıÖµ£º[1660030311959965796]"), WIKI_CATALOG("wiki_catalog", 42, "Wiki " + "×ÓÄ¿Â¼" + " Block");
+    TEXT("text", 2, "æ–‡æœ¬ Block"), HEADING1("heading1", 3, "ä¸€çº§æ ‡é¢˜ Block"), HEADING2("heading2", 4, "äºŒçº§æ ‡é¢˜ Block"),
+    HEADING3("heading3", 5, "ä¸‰çº§æ ‡é¢˜ Block"), HEADING4("heading4", 6, "å››çº§æ ‡é¢˜ Block"), HEADING5("heading5", 7, "äº”çº§æ ‡é¢˜ " +
+            "Block"), HEADING6("heading6", 8, "å…­çº§æ ‡é¢˜ Block"), HEADING7("heading7", 9, "ä¸ƒçº§æ ‡é¢˜ Block"), HEADING8(
+            "heading8", 10, "å…«çº§æ ‡é¢˜ Block"), HEADING9("heading9", 11, "ä¹çº§æ ‡é¢˜ Block"), BULLET("bullet", 12,
+            "æ— åºåˆ—è¡¨" + " Block"), ORDERED("ordered", 13, "æœ‰åºåˆ—è¡¨ Block"), CODE("code", 14, "ä»£ç å— Block"), QUOTE("quote",
+            15, "å¼•ç”¨ " + "Block"), EQUATION("equation", 999, "å…¬å¼ Block"), TODO("todo", 17, "å¾…åŠäº‹é¡¹ Block"), BITABLE(
+            "bitable", 18, "å¤šç»´è¡¨æ ¼ Block"), CALLOUT("callout", 19, "é«˜äº®å— Block"), CHAT_CARD("chat_card", 20,
+            "ç¾¤èŠå¡ç‰‡ Block"), DIVIDER("divider", 22, "åˆ†å‰²çº¿ Block"), FILE("file", 23, "æ–‡ä»¶ Block"), GRID("grid", 24,
+            "åˆ†æ  " + "Block"), IFRAME("iframe", 26, "å†…åµŒ Block"), IMAGE("image", 27, "å›¾ç‰‡ Block"), ISV("isv", 999,
+            "ä¸‰æ–¹ " + "Block"), ADD_ONS("add_ons", 999, "Add-ons"), SHEET("sheet", 30, "ç”µå­è¡¨æ ¼ Block"), TABLE("table", 31
+            , "è¡¨æ ¼ " + "Block"), QUOTE_CONTAINER("quote_container", 34, "å¼•ç”¨å®¹å™¨ Block"), OKR("okr", 36,
+            "OKR " + "Block" + "ï¼Œä»…å¯åœ¨ä½¿ç”¨" + " " + "user_access_token æ—¶åˆ›å»º"), COMMENT_IDS("comment_ids", 999, "è¯„è®º id " +
+            "åˆ—è¡¨ï¼Œç¤ºä¾‹å€¼ï¼š[1660030311959965796]"), WIKI_CATALOG("wiki_catalog", 42, "Wiki " + "å­ç›®å½•" + " Block");
     public String name;
     public int type;
     public String desc;

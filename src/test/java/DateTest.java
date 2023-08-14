@@ -13,22 +13,22 @@ import java.util.GregorianCalendar;
 public class DateTest {
     @Test
     public void test1() {
-        //¸ñÊ½»¯Ê±¼ä  ¾ßÌåÒªÉ¶¸ñÊ½ÄãÃÇ×Ô¼ºÐ´ EEÊÇÐÇÆÚµÄÒâË¼ Ò»°ãÊ±ºòÓÃ²»µ½µÄ ÄêÔÂÈÕ×ãÒÔ
+        //ï¿½ï¿½Ê½ï¿½ï¿½Ê±ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ÒªÉ¶ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½Ð´ EEï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½Ë¼ Ò»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd EE");
-        //ÄÃµ½½ñÌìµÄÊ±¼ä  Õâ¸öÊ±¼äÈç¹ûÄã²»Òªµ±Ç°Ê±¼ä Òª×Ô¼º´«Ê±¼ä½øÀ´ ÔÚÕâÀï½øÐÐÐÞ¸Ä¼´¿É
+        //ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½  ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã²»Òªï¿½ï¿½Ç°Ê±ï¿½ï¿½ Òªï¿½Ô¼ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸Ä¼ï¿½ï¿½ï¿½
         Calendar nowTime = Calendar.getInstance();
-        //£¡£¡£¡ÉèÖÃÃ¿ÖÜµÄµÚÒ»Ìì£¬ÎÒÃÇÖÐ¹úÈËµÚÒ»ÌìÊÇÖÜÒ»£¬ÇÐ¼ÇÐÞ¸ÄÕâ¸ö£¬·ñÔò»á³öÏÖ»ñÈ¡ÖÜÈÕµÄÊ±ºò£¬Ê±¼ä´íÎóµÄÎÊÌâ
-        //ÀýÈçÎÒ½ñÌìÊÇ 2022-8-23ÖÜ¶þ ¶ÔÓÚÎÒÃÇÀ´Ëµ ±¾ÖÜµÄÖÜÈÕ¾ÍÓ¦¸ÃÊÇ 8-28ÈÕ µ«ÊÇÈç¹ûÄãÃ»ÓÐÉèÖÃ³õÊ¼Ê±¼ä
-        //ÄãÔÚÈ¥»ñÈ¡ÖÜÈÕµÄÊ±¼ä ¾Í»áÊÇ8-21 ÒòÎªÄ¬ÈÏÖÜÈÕÊÇ¿ªÊ¼µÄÈÕÆÚ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ÜµÄµï¿½Ò»ï¿½ì£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½Ëµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½È¡ï¿½ï¿½ï¿½Õµï¿½Ê±ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Ò½ï¿½ï¿½ï¿½ï¿½ï¿½ 2022-8-23ï¿½Ü¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµ ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½Õ¾ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ 8-28ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ã³ï¿½Ê¼Ê±ï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½È¡ï¿½ï¿½ï¿½Õµï¿½Ê±ï¿½ï¿½ ï¿½Í»ï¿½ï¿½ï¿½8-21 ï¿½ï¿½ÎªÄ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         nowTime.setFirstDayOfWeek(Calendar.MONDAY);
-        //°ÑÏÖÔÚµÄÊ±¼ä·­µ½ÎÒÃÇÖ¸¶¨µÄÖÜ¼¸ÉÏ£¬MONDAY£¬TUESDAY£¬WEDNESDAY£¬THURSDAY£¬FRIDAY£¬SATURDAY£¬SUNDAY
-        //ÕâÑùÎÒÃÇ¾Í¿ÉÒÔÄÃµ½ÎÒÃÇËùÑ¡µÄÄÇ¸öÊ±¼äËùÔÚÖÜµÄÈÎÒâÖÜXµÄÈÕÆÚÁË
-        //ÄÇ»ùÓÚÕâ¸ö Ëã³öÀ´µÄÊ±¼ä-7¾ÍÊÇÉÏÖÜÖÜX  +7¾ÍÊÇÏÂÖÜÖÜX  ÍÛÈûµÄ¼òµ¥
-        nowTime.set(Calendar.DAY_OF_WEEK,  Calendar.SATURDAY);
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Ê±ï¿½ä·­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ü¼ï¿½ï¿½Ï£ï¿½MONDAYï¿½ï¿½TUESDAYï¿½ï¿½WEDNESDAYï¿½ï¿½THURSDAYï¿½ï¿½FRIDAYï¿½ï¿½SATURDAYï¿½ï¿½SUNDAY
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾Í¿ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ç¸ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        //ï¿½Ç»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½-7ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½X  +7ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½X  ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+        nowTime.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         Calendar oldTime = new GregorianCalendar();
         oldTime.setTime(nowTime.getTime());
-        //²ÎÊý1£º 1Ôò´ú±íµÄÊÇ¶ÔÄê·Ý²Ù×÷£¬2ÊÇ¶ÔÔÂ·Ý²Ù×÷£¬3ÊÇ¶ÔÐÇÆÚ²Ù×÷£¬5ÊÇ¶ÔÈÕÆÚ²Ù×÷£¬11ÊÇ¶ÔÐ¡Ê±²Ù×÷£¬12ÊÇ¶Ô·ÖÖÓ²Ù×÷£¬13ÊÇ¶ÔÃë²Ù×÷£¬14ÊÇ¶ÔºÁÃë²Ù×÷
-        //²ÎÊý2:°ÑÈÕÆÚÍùºóÔö¼Ó»òÕß¼õÈ¥,ÕûÊý  ÍùºóÍÆ,¸ºÊýÍùÇ°ÒÆ¶¯
+        //ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¶ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½Ç¶ï¿½ï¿½Â·Ý²ï¿½ï¿½ï¿½ï¿½ï¿½3ï¿½Ç¶ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½5ï¿½Ç¶ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½11ï¿½Ç¶ï¿½Ð¡Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½12ï¿½Ç¶Ô·ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ï¿½ï¿½13ï¿½Ç¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½14ï¿½Ç¶Ôºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½2:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó»ï¿½ï¿½ß¼ï¿½È¥,ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Æ¶ï¿½
         oldTime.add(Calendar.DATE, -7);
         System.out.println(format.format(oldTime.getTime()));
     }
@@ -38,13 +38,14 @@ public class DateTest {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd EE");
         Calendar thisSaturday = Calendar.getInstance();
         thisSaturday.setFirstDayOfWeek(Calendar.SUNDAY);
-        thisSaturday.set(Calendar.DAY_OF_WEEK,  Calendar.SATURDAY);
+        thisSaturday.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         Calendar lastSaturday = new GregorianCalendar();
         lastSaturday.setTime(thisSaturday.getTime());
         lastSaturday.add(Calendar.DATE, -7);
         System.out.println(format.format(lastSaturday.getTime()));
         System.out.println(format.format(thisSaturday.getTime()));
     }
+
     @Test
     public void test3() {
         DateUtil dateUtil = new DateUtil();

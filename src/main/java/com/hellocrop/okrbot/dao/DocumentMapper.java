@@ -15,7 +15,7 @@ public class DocumentMapper {
     private final String folderToken = "Pg1BfZ7sOl1gRCdHpm2ckxX0nnd";
 
     /**
-     * 返回文档信息Json
+     * 鏂板缓鏂囨。锛岃繑鍥炴枃妗ｄ俊鎭疛son
      *
      * @param tenant_access_token
      * @param documentName

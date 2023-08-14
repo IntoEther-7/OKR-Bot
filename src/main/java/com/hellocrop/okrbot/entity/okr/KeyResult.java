@@ -17,11 +17,11 @@ public class KeyResult {
     private int weight;
     private int kr_weight;
     private ProgressRate progress_rate;
-    private String progress_rate_percent_last_updated_time; // ×îºóÒ»´Î½ø¶È°Ù·Ö±È¸üĞÂÊ±¼ä ºÁÃë
-    private String progress_rate_status_last_updated_time; // ×îºóÒ»´Î×´Ì¬¸üĞÂÊ±¼ä ºÁÃë
-    private String progress_record_last_updated_time; // ×îºóÒ»´ÎÔÚ²à±ßÀ¸ĞÂÔö»òÕß±à¼­½øÕ¹µÄÊ±¼ä ºÁÃë
-    private String progress_report_last_updated_time; // ×îºóÒ»´Î±à¼­±¸×¢µÄÊ±¼ä ºÁÃë
-    private String score_last_updated_time; // ×îºóÒ»´Î´ò·Ö¸üĞÂÊ±¼ä ºÁÃë
-    private String deadline; // ½ØÖ¹Ê±¼ä ºÁÃë
+    private String progress_rate_percent_last_updated_time; // æœ€åä¸€æ¬¡è¿›åº¦ç™¾åˆ†æ¯”æ›´æ–°æ—¶é—´ æ¯«ç§’
+    private String progress_rate_status_last_updated_time; // æœ€åä¸€æ¬¡çŠ¶æ€æ›´æ–°æ—¶é—´ æ¯«ç§’
+    private String progress_record_last_updated_time; // æœ€åä¸€æ¬¡åœ¨ä¾§è¾¹æ æ–°å¢æˆ–è€…ç¼–è¾‘è¿›å±•çš„æ—¶é—´ æ¯«ç§’
+    private String progress_report_last_updated_time; // æœ€åä¸€æ¬¡ç¼–è¾‘å¤‡æ³¨çš„æ—¶é—´ æ¯«ç§’
+    private String score_last_updated_time; // æœ€åä¸€æ¬¡æ‰“åˆ†æ›´æ–°æ—¶é—´ æ¯«ç§’
+    private String deadline; // æˆªæ­¢æ—¶é—´ æ¯«ç§’
     private List<ProgressRecord> progress_record_list;
 }

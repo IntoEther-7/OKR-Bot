@@ -26,7 +26,7 @@ public class DateUtil {
         thisSat.setFirstDayOfWeek(Calendar.SUNDAY);
         thisSat.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
 
-        // ÉÏÖÜÁù
+        // ä¸Šå‘¨å…­
         Calendar lastSat = Calendar.getInstance();
         lastSat.setTime(thisSat.getTime());
         lastSat.add(Calendar.DATE, -7);
@@ -43,7 +43,7 @@ public class DateUtil {
         thisSat.setFirstDayOfWeek(Calendar.SUNDAY);
         thisSat.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
 
-        // ÉÏÖÜÁù
+        // ä¸Šå‘¨å…­
         Calendar lastSat = Calendar.getInstance();
         lastSat.setTime(thisSat.getTime());
 

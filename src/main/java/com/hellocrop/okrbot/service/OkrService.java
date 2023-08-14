@@ -2,6 +2,7 @@ package com.hellocrop.okrbot.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.hellocrop.okrbot.dao.*;
 import com.hellocrop.okrbot.entity.JsonString;
 import com.hellocrop.okrbot.entity.okr.Okr;
@@ -9,6 +10,8 @@ import com.hellocrop.okrbot.entity.okr.OkrList;
 import com.hellocrop.okrbot.entity.okr.ProgressRecord;
 import com.hellocrop.okrbot.util.DateUtil;
 import com.hellocrop.okrbot.util.OkrUtil;
+import com.hellocrop.okrbot.util.ProgressBlockUtil;
+import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,13 +31,13 @@ public class OkrService {
     private DateUtil dateUtil = new DateUtil();
 
     public void weekReport(String appId, String appSecret) throws Exception {
-        // ¼øÈ¨
+        // é‰´æƒ
         JsonString auth = new AuthMapper().auth(appId, appSecret);
         tenant_access_token = "Bearer " + auth.get("tenant_access_token").string();
 
         List<String> userIdxList = getAllEmployee();
 
-        // ¸ù¾İÈËÔ±»ñÈ¡OKR
+        // æ ¹æ®äººå‘˜è·å–OKR
         Map<String, OkrList> okrListMap = new HashMap<>();
         for (String userIdx : userIdxList) {
             JsonString okrsByEmployer = getOkrsByEmployer(userIdx);
@@ -42,40 +45,46 @@ public class OkrService {
             okrListMap.put(userIdx, okrList);
         }
 
-        // ĞÂ½¨ÎÄµµ
-        JsonString documentJsonString = new DocumentMapper().newDocument(tenant_access_token,
-                "È«Ô±ÖÜ±¨£¨%s£©".formatted(dateUtil.string()));
 
-        // ´¦ÀíOKRÊı¾İ, È¡³ö½øÕ¹
-        Map<String, List<ProgressRecord>> map_pgs = new OkrUtil(okrListMap).getMap_pgs();
-
-
-        // ¹¹½¨½øÕ¹¿é
-        Map<String, List<Object>> pgsBlocks = new LinkedHashMap<>();
-        Iterator<Map.Entry<String, List<ProgressRecord>>> entryIterator = map_pgs.entrySet().iterator();
-        while (entryIterator.hasNext()) {
-            Map.Entry<String, List<ProgressRecord>> next = entryIterator.next();
-            pgsBlocks.put(next.getKey(), pgs2block(next.getValue()));
+        // å¤„ç†OKRæ•°æ®, æ‹¿åˆ°æ¯ä¸ªäººçš„è¿›å±•
+        Map<String, List<JsonString>> allPgs = getAllPgs(okrListMap);
+        ProgressBlockUtil progressBlockUtil = new ProgressBlockUtil();
+        for (Map.Entry<String, List<JsonString>> next : allPgs.entrySet()) {
+            // æ¯ä¸ªäººçš„è¿›å±•å¤„ç†
+            progressBlockUtil.extract(next.getValue(), dateUtil);
         }
 
-        // ÎªÃ¿¸öÈË¹¹½¨¿é
-        Iterator<Map.Entry<String, List<Object>>> iterator = pgsBlocks.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, List<Object>> next = iterator.next();
-            String userIdx = next.getKey();
-            List<Object> userPgs = next.getValue();
 
-            // TODO: ¹¹½¨Ò»¸ö±êÌâ¿é
+        // æå–è¿›å±•ä¿¡æ¯
 
-            // TODO: ¹¹½¨ºóĞø¿é
-        }
+
+        // æ„å»ºè¿›å±•å—
+        // Map<String, List<Object>> pgsBlocks = new LinkedHashMap<>();
+        // Iterator<Map.Entry<String, List<ProgressRecord>>> entryIterator = map_pgs.entrySet().iterator();
+        // while (entryIterator.hasNext()) {
+        //     Map.Entry<String, List<ProgressRecord>> next = entryIterator.next();
+        //     pgsBlocks.put(next.getKey(), pgs2block(next.getValue()));
+        // }
+
+        // ä¸ºæ¯ä¸ªäººæ„å»ºå—
+        // Iterator<Map.Entry<String, List<Object>>> iterator = pgsBlocks.entrySet().iterator();
+        // while (iterator.hasNext()) {
+        //     Map.Entry<String, List<Object>> next = iterator.next();
+        //     String userIdx = next.getKey();
+        //     List<Object> userPgs = next.getValue();
+        //     // TODO: æ„å»ºä¸€ä¸ªæ ‡é¢˜å—
+        //     // TODO: æ„å»ºåç»­å—
+        // }
 
 
         log.info(null);
+        // æ–°å»ºæ–‡æ¡£
+        // JsonString documentJsonString = new DocumentMapper().newDocument(tenant_access_token,
+        //         "å…¨å‘˜å‘¨æŠ¥ï¼ˆ%sï¼‰".formatted(dateUtil.string()));
     }
 
     private List<String> getAllEmployee() throws UnirestException, IOException {
-        // »ñÈ¡²¿ÃÅĞÅÏ¢
+        // è·å–éƒ¨é—¨ä¿¡æ¯
         JsonString allDepartment = new DepartmentMapper().allDepartment(tenant_access_token);
         JsonString departments = allDepartment.get("data").get("items");
         List<String> departmentIdList = new LinkedList<>();
@@ -84,13 +93,13 @@ public class OkrService {
         }
         departmentIdList.add("0");
 
-        // ¸ù¾İ²¿ÃÅ²éÑ¯ËùÓĞÈËÔ±ĞÅÏ¢
+        // æ ¹æ®éƒ¨é—¨æŸ¥è¯¢æ‰€æœ‰äººå‘˜ä¿¡æ¯
         List<String> employeeIdList = new LinkedList<>();
         EmployerMapper employerMapper = new EmployerMapper();
         for (String departmentId : departmentIdList) {
             JsonString personsByDepartment = employerMapper.getPersonsByDepartment(tenant_access_token, departmentId);
 
-            // ²éÑ¯ÈËÔ±
+            // æŸ¥è¯¢äººå‘˜
             JsonString employee = personsByDepartment.get("data").get("items");
             for (int i = 0; i < employee.getNode().size(); i++) {
                 employeeIdList.add(employee.get(i).get("user_id").string());
@@ -100,22 +109,20 @@ public class OkrService {
     }
 
 
-    // ÄÃµ½okr
+    // æ‹¿åˆ°okr
     private JsonString getOkrsByEmployer(String userId) throws UnirestException, JsonProcessingException {
         return okrMapper.getOkrsByEmployer(tenant_access_token, userId);
     }
 
-    // ´¦ÀíOKRÊı¾İ, ÄÃµ½Ä¿±êÊı¾İ
+    // å¤„ç†OKRæ•°æ®, æ‹¿åˆ°ç›®æ ‡æ•°æ®
     private OkrList deserializationOKR(String userIdx, JsonString okrJsonString) throws JsonProcessingException {
-        List<Okr> okrs = JsonString.objectMapper.readValue(okrJsonString.get("data").get("okr_list").getString(),
-                new TypeReference<List<Okr>>() {
-                });
+        List<Okr> okrs = JsonString.objectMapper.readValue(okrJsonString.get("data").get("okr_list").getString(), new TypeReference<List<Okr>>() {
+        });
         return new OkrList(userIdx, okrs);
     }
 
-    // »ñÈ¡¸öÈË½øÕ¹×ª±äÎªblock
-    private List<Object> pgs2block(List<ProgressRecord> progressRecords) throws UnirestException,
-            JsonProcessingException {
+    // è·å–ä¸ªäººè¿›å±•è½¬å˜ä¸ºblock
+    private List<Object> pgs2block(List<ProgressRecord> progressRecords) throws UnirestException, JsonProcessingException {
         List<Object> blocks = new LinkedList<>();
 
         ProgressMapper progressMapper = new ProgressMapper();
@@ -124,17 +131,42 @@ public class OkrService {
             ProgressRecord next = iterator.next();
             JsonString progress = progressMapper.getProgress(tenant_access_token, next.getId());
 
-            // ÅĞ¶ÏÊ±¼ä¶Ô²»¶Ô, ÊÇ²»ÊÇÕâÖÜµÄ
+            // åˆ¤æ–­æ—¶é—´å¯¹ä¸å¯¹, æ˜¯ä¸æ˜¯è¿™å‘¨çš„
             Date before = new Date(Long.parseLong(progress.get("data").get("modify_time").string()));
             if (dateUtil.inThisWeek(before)) {
-                List<Object> pgsBlock =
-                        JsonString.objectMapper.readValue(JsonString.objectMapper.writeValueAsString(progress.get(
-                                "data").get("content").get("blocks").getNode()), new TypeReference<>() {
-                        });
-                blocks.addAll(pgsBlock);
+                List<Object> pgsBlock = JsonString.objectMapper.readValue(JsonString.objectMapper.writeValueAsString(progress.get("data").get("content").get("blocks").getNode()), new TypeReference<>() {
+                });
+                blocks.add(pgsBlock);
             }
         }
         return blocks;
 
     }
+
+    // è·å–æ¯ä¸ªäººçš„è¿›å±•å…·ä½“å†…å®¹ï¼Œè¿”å›map
+    private Map<String, List<JsonString>> getAllPgs(Map<String, OkrList> okrListMap) throws UnirestException, JsonProcessingException {
+        Map<String, List<JsonString>> map_pgs_js = new LinkedHashMap<>();
+
+        Map<String, List<ProgressRecord>> map_pgs = new OkrUtil(okrListMap).getMap_pgs();
+        ProgressMapper progressMapper = new ProgressMapper();
+        Iterator<Map.Entry<String, List<ProgressRecord>>> map_pgsEntryIterator = map_pgs.entrySet().iterator();
+        while (map_pgsEntryIterator.hasNext()) {
+            Map.Entry<String, List<ProgressRecord>> next = map_pgsEntryIterator.next();
+            Iterator<ProgressRecord> progressRecordIterator = next.getValue().iterator();
+            while (progressRecordIterator.hasNext()) {
+                // å•ä¸ªè¿›å±•
+                JsonString progress = progressMapper.getProgress(tenant_access_token, progressRecordIterator.next().getId());
+                if (!map_pgs_js.containsKey(next.getKey())) {
+                    map_pgs_js.put(next.getKey(), new LinkedList<>());
+                }
+                map_pgs_js.get(next.getKey()).add(progress);
+            }
+            if (!map_pgs_js.containsKey(next.getKey())) {
+                map_pgs_js.put(next.getKey(), null);
+            }
+        }
+
+        return map_pgs_js;
+    }
+
 }
