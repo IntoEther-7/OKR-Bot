@@ -5,7 +5,7 @@ package com.hellocrop.okrbot.entity.block.type;
  * @date 2023/8/13 13:03
  * @project okrbot
  */
-public enum BlcokType {
+public enum BlockType {
     TEXT("text", 2, "文本 Block"), HEADING1("heading1", 3, "一级标题 Block"), HEADING2("heading2", 4, "二级标题 Block"),
     HEADING3("heading3", 5, "三级标题 Block"), HEADING4("heading4", 6, "四级标题 Block"), HEADING5("heading5", 7, "五级标题 " +
             "Block"), HEADING6("heading6", 8, "六级标题 Block"), HEADING7("heading7", 9, "七级标题 Block"), HEADING8(
@@ -23,7 +23,7 @@ public enum BlcokType {
     public int type;
     public String desc;
 
-    BlcokType(String name, int type, String desc) {
+    BlockType(String name, int type, String desc) {
         this.name = name;
         this.type = type;
         this.desc = desc;

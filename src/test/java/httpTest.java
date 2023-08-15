@@ -1,6 +1,7 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellocrop.okrbot.dao.AuthMapper;
+import com.hellocrop.okrbot.dao.DocumentMapper;
 import com.hellocrop.okrbot.entity.JsonString;
 import com.hellocrop.okrbot.entity.okr.Progress;
 import com.hellocrop.okrbot.service.OkrService;
@@ -98,5 +99,10 @@ public class httpTest {
         ObjectMapper mapper = new ObjectMapper();
         Progress data = mapper.readValue(mapper.writeValueAsString(mapper.readTree(s).get("data")), Progress.class);
         log.info(s);
+    }
+
+    @Test
+    public void test4() throws Exception{
+        new DocumentMapper().cleanDocument("Bearer t-g1048ehV7RXO5KWJNQ6TAJ6ZJOZ3NDJ4X4R5KJO2", "LWwEdu9jtolxZPxxXO1coO66nAc");
     }
 }

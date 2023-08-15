@@ -1,7 +1,8 @@
 package com.hellocrop.okrbot.entity.block;
 
-import com.hellocrop.okrbot.entity.block.type.BlcokType;
+import com.hellocrop.okrbot.entity.block.type.BlockType;
 import com.hellocrop.okrbot.entity.block.type.MultiTypeBlock;
+import com.hellocrop.okrbot.entity.block.type.TextBlock;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -16,13 +17,16 @@ import java.util.Map;
 public class Block {
 
     private Integer block_type;
-    private MultiTypeBlock block;
-    private BlcokType blcokType;
-    private final String name;
+    private TextBlock text;
+    private TextBlock heading1;
+    private TextBlock heading2;
+    private TextBlock heading3;
+    private TextBlock heading4;
+    private TextBlock heading5;
+    private TextBlock bullet;
 
-    public Block(BlcokType blcokType, MultiTypeBlock block) {
-        block_type = blcokType.type;
-        name = blcokType.name;
+    public Block(BlockType blockType) {
+        block_type = blockType.type;
     }
 
     /**
@@ -32,7 +36,7 @@ public class Block {
      * @param block
      * @return
      */
-    public static Map<String, MultiTypeBlock> constructBlock(BlcokType type, MultiTypeBlock block) {
+    public static Map<String, MultiTypeBlock> constructBlock(BlockType type, MultiTypeBlock block) {
         Map<String, MultiTypeBlock> map = new HashMap<>();
         map.put(type.name, block);
         return map;

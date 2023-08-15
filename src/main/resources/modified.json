@@ -1,0 +1,153 @@
+{
+  "文本自然段":  {
+    "block_id": "FHJ8dpaPfoi9yqx99DncYU4Mnkb",
+    "block_type": 2,
+    "parent_id": "II1Tdh3amoKLapxXfKScGgt9nmc",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "本周进展： ",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  "无序列表自然段": {
+    "block_id": "HB9UdEtmToy4k0xXe3xcnTplnYf",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "和北京宝兰德公司达成分销意向。 ",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "II1Tdh3amoKLapxXfKScGgt9nmc"
+  },
+  "引用自然段": {
+    "block_id": "SIWVdSjD3orXoPxudipcSQmungb",
+    "block_type": 2,
+    "parent_id": "II1Tdh3amoKLapxXfKScGgt9nmc",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "下周计划：",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "mention_user": {
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            },
+            "user_id": "ou_05ab03d6f1fba287a2aa4e1decde4f12"
+          }
+        },
+        {
+          "mention_user": {
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            },
+            "user_id": "ou_80f012ab640bde78bcc18daa378a4f31"
+          }
+        },
+        {
+          "mention_user": {
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            },
+            "user_id": "ou_dc0664d3d275ff2cbcbbd60450fde475"
+          }
+        },
+        {
+          "text_run": {
+            "content": "敲定全年预算   ",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  "有序列表自然段" :  {
+    "block_id": "WDWEdOEifoiuntx0AcocfHS0n4e",
+    "block_type": 6,
+    "heading4": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "O5：融资：保障公司现金流足够健康",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "link": {
+                "url": "https%3A%2F%2Fautomq66.feishu.cn%2Fokr%2Fuser%2F7156133342243930113%2F%3FisFromShare%3Dtrue%26objectiveId%3D7258927364741169156%26objective_progressId%3D7265534423021961218%26okrId%3D7177839921183801372%26params%3D2"
+              },
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "II1Tdh3amoKLapxXfKScGgt9nmc"
+  }
+}

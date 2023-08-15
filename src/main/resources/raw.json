@@ -1,0 +1,89 @@
+{
+  "文本自然段": {
+    "paragraph": {
+      "elements": [
+        {
+          "textRun": {
+            "style": {},
+            "text": "本周进展："
+          },
+          "type": "textRun"
+        }
+      ]
+    },
+    "type": "paragraph"
+  },
+  "无序列表自然段": {
+    "paragraph": {
+      "elements": [
+        {
+          "textRun": {
+            "style": {},
+            "text": "和北京宝兰德公司达成分销意向。"
+          },
+          "type": "textRun"
+        }
+      ],
+      "style": {
+        "list": {
+          "indentLevel": 1,
+          "type": "bullet"
+        }
+      }
+    },
+    "type": "paragraph"
+  },
+  "引用自然段": {
+    "paragraph": {
+      "elements": [
+        {
+          "textRun": {
+            "style": {},
+            "text": "下周计划：敲定全年预算"
+          },
+          "type": "textRun"
+        },
+        {
+          "person": {
+            "openId": "ou_80f012ab640bde78bcc18daa378a4f31"
+          },
+          "type": "person"
+        },
+        {
+          "person": {
+            "openId": "ou_05ab03d6f1fba287a2aa4e1decde4f12"
+          },
+          "type": "person"
+        },
+        {
+          "person": {
+            "openId": "ou_dc0664d3d275ff2cbcbbd60450fde475"
+          },
+          "type": "person"
+        }
+      ]
+    },
+    "type": "paragraph"
+  },
+  "有序列表自然段": {
+    "paragraph": {
+      "elements": [
+        {
+          "textRun": {
+            "style": {},
+            "text": "接触一名 Kafka 专家，目前还未明确。"
+          },
+          "type": "textRun"
+        }
+      ],
+      "style": {
+        "list": {
+          "indentLevel": 1,
+          "number": 1,
+          "type": "number"
+        }
+      }
+    },
+    "type": "paragraph"
+  }
+}

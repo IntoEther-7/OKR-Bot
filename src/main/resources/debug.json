@@ -1,0 +1,321 @@
+{
+  "children": [
+    {
+      "block_type": 5,
+      "heading3": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "1. "
+            }
+          },
+          {
+            "content": "O3: 商业：今年自然年截止跑通 PMF\n"
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 2,
+      "text": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "本周进展："
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 12,
+      "bullet": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "和北京宝兰德公司达成分销意向。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 2,
+      "text": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "挑战求助："
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 12,
+      "bullet": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "暂时无法确定分成比例，正在寻求有经验的人帮助，大家有建议私信我。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 2,
+      "text": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "风险同步："
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 12,
+      "bullet": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "对方客户画像是海关，政府，电信等央企，预算充足，私有云环境，不一定有 K8S，对供应商资质有要求。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 2,
+      "text": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "思考观点："
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 12,
+      "bullet": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "为什么要做这类项目的关键是我们要尽快验证客户价值，和客户共创，通过合同来验证事情做的对不对，并且加速产品成熟。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 2,
+      "text": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "下周计划："
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 12,
+      "bullet": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "到北京当面沟通合作协议细节。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 5,
+      "heading3": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "2. "
+            }
+          },
+          {
+            "content": "O5: 融资：保障公司现金流足够健康\n"
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 2,
+      "text": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "本周进展：由"
+            }
+          },
+          {
+            "mention_user": {
+              "user_id": "ou_dc0664d3d275ff2cbcbbd60450fde475"
+            }
+          },
+          {
+            "text_run": {
+              "content": "负责全年预算初稿"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 2,
+      "text": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "下周计划：敲定全年预算"
+            }
+          },
+          {
+            "mention_user": {
+              "user_id": "ou_80f012ab640bde78bcc18daa378a4f31"
+            }
+          },
+          {
+            "mention_user": {
+              "user_id": "ou_05ab03d6f1fba287a2aa4e1decde4f12"
+            }
+          },
+          {
+            "mention_user": {
+              "user_id": "ou_dc0664d3d275ff2cbcbbd60450fde475"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 4,
+      "heading2": {
+        "elements": [
+          {
+            "mention_user": {
+              "user_id": "ou_80f012ab640bde78bcc18daa378a4f31"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 5,
+      "heading3": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "1. "
+            }
+          },
+          {
+            "content": "O1: 构建支持多云部署、多产品托管、BYOC 优先、以及 Serverless 的 AutoMQ 通用云平台\n"
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 2,
+      "text": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "明确 Home 中两大顶级资源：环境和订阅计划，并完成相应的产品和交互设计。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 2,
+      "text": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "调研了 scalegrid 的 BYOC 形态，该厂商支持主流数据库软件的托管，其中比较好的设计已应用到 Home 创建环境的流程当中。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 5,
+      "heading3": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "2. "
+            }
+          },
+          {
+            "content": "O3: 完成主营产品的商业化发布：最具「产品」和「技术」竞争力的 RocketMQ 与「最便宜」的Kafka\n"
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 2,
+      "text": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "调研业界新的 Kafka 竞品「WarpStream」，特点是完全基于 S3 存储，快速拿到降本效果，组织多次讨论 Kafka on S3 可行性。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 5,
+      "heading3": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "3. "
+            }
+          },
+          {
+            "content": "O5: 打造一支高效、稳定、具备一流研发实力的技术团队\n"
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 2,
+      "text": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "接触一名 Kafka 专家，目前还未明确。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "block_type": 2,
+      "text": {
+        "elements": [
+          {
+            "text_run": {
+              "content": "前段时间 Offer 的实习生将于下周入职。"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "index": -1
+}

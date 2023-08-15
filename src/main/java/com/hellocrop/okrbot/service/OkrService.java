@@ -2,16 +2,14 @@ package com.hellocrop.okrbot.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.hellocrop.okrbot.dao.*;
 import com.hellocrop.okrbot.entity.JsonString;
+import com.hellocrop.okrbot.entity.block.BlockMessage;
 import com.hellocrop.okrbot.entity.okr.Okr;
 import com.hellocrop.okrbot.entity.okr.OkrList;
 import com.hellocrop.okrbot.entity.okr.ProgressRecord;
-import com.hellocrop.okrbot.util.DateUtil;
-import com.hellocrop.okrbot.util.OkrUtil;
-import com.hellocrop.okrbot.util.ProgressBlockUtil;
-import com.mashape.unirest.http.JsonNode;
+import com.hellocrop.okrbot.entity.okr.view.UserView;
+import com.hellocrop.okrbot.util.*;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +27,7 @@ public class OkrService {
     private String tenant_access_token;
     private OkrMapper okrMapper = new OkrMapper();
     private DateUtil dateUtil = new DateUtil();
+    private String documentName = "全员周报（%s）".formatted(dateUtil.string());
 
     public void weekReport(String appId, String appSecret) throws Exception {
         // 鉴权
@@ -47,37 +46,39 @@ public class OkrService {
 
 
         // 处理OKR数据, 拿到每个人的进展
-        Map<String, List<JsonString>> allPgs = getAllPgs(okrListMap);
-        ProgressBlockUtil progressBlockUtil = new ProgressBlockUtil();
-        for (Map.Entry<String, List<JsonString>> next : allPgs.entrySet()) {
-            // 每个人的进展处理
-            progressBlockUtil.extract(next.getValue(), dateUtil);
+        // Map<String, List<JsonString>> allPgs = getAllPgs(okrListMap);
+        Map<String, JsonString> id2pgs = id2pgs(okrListMap);
+
+        Map<String, UserView> map = new ProgressBlockUtil().constructMap(okrListMap, id2pgs);
+
+        List<BlockMessage> blockMessages = BlockGenerator.generateDocumentBlock(map.values().stream().toList());
+        // new JsonString(JsonString.objectMapper.writeValueAsString(blockMessages.get(0)))
+
+        DocumentMapper documentMapper = new DocumentMapper();
+        String documentName = "全员周报（%s）".formatted(dateUtil.string());
+        DocumentCheckUtil documentCheckUtil = new DocumentCheckUtil();
+
+        String documentId;
+        if (documentCheckUtil.getDocumentIdThisWeek(documentName) == null) {
+            // 如果不存在就新建
+            JsonString newDocument = documentMapper.newDocument(tenant_access_token, documentName);
+            documentId = newDocument.get("data").get("document").get("document_id").string();
+            documentCheckUtil.insertDocumentIdThisWeek(documentName, documentId);
+        } else {
+            // 如果存在就刷新
+            documentId = documentCheckUtil.getDocumentIdThisWeek(documentName);
+            documentMapper.cleanDocument(documentId, documentId);
         }
 
+        // 写入文档
+        for (BlockMessage blockMessage : blockMessages) {
+            // debug
+            // JsonString.objectMapper.writeValueAsString(blockMessage)
+            log.info(documentMapper.insertDocument(tenant_access_token, documentId, blockMessage).getString());
+            Thread.sleep(334);
+        }
 
-        // 提取进展信息
-
-
-        // 构建进展块
-        // Map<String, List<Object>> pgsBlocks = new LinkedHashMap<>();
-        // Iterator<Map.Entry<String, List<ProgressRecord>>> entryIterator = map_pgs.entrySet().iterator();
-        // while (entryIterator.hasNext()) {
-        //     Map.Entry<String, List<ProgressRecord>> next = entryIterator.next();
-        //     pgsBlocks.put(next.getKey(), pgs2block(next.getValue()));
-        // }
-
-        // 为每个人构建块
-        // Iterator<Map.Entry<String, List<Object>>> iterator = pgsBlocks.entrySet().iterator();
-        // while (iterator.hasNext()) {
-        //     Map.Entry<String, List<Object>> next = iterator.next();
-        //     String userIdx = next.getKey();
-        //     List<Object> userPgs = next.getValue();
-        //     // TODO: 构建一个标题块
-        //     // TODO: 构建后续块
-        // }
-
-
-        log.info(null);
+        new MessageMapper().send2Person(tenant_access_token, "ou_d37e7a78deaefb355cc3390f224e5900", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
         // 新建文档
         // JsonString documentJsonString = new DocumentMapper().newDocument(tenant_access_token,
         //         "全员周报（%s）".formatted(dateUtil.string()));
@@ -102,7 +103,7 @@ public class OkrService {
             // 查询人员
             JsonString employee = personsByDepartment.get("data").get("items");
             for (int i = 0; i < employee.getNode().size(); i++) {
-                employeeIdList.add(employee.get(i).get("user_id").string());
+                employeeIdList.add(employee.get(i).get("open_id").string());
             }
         }
         return employeeIdList;
@@ -169,4 +170,30 @@ public class OkrService {
         return map_pgs_js;
     }
 
+
+    private Map<String, JsonString> id2pgs(Map<String, OkrList> okrListMap) throws UnirestException, JsonProcessingException {
+        Map<String, JsonString> map_pgs_js = new LinkedHashMap<>();
+
+        Map<String, List<ProgressRecord>> map_pgs = new OkrUtil(okrListMap).getMap_pgs();
+        ProgressMapper progressMapper = new ProgressMapper();
+        Iterator<Map.Entry<String, List<ProgressRecord>>> map_pgsEntryIterator = map_pgs.entrySet().iterator();
+        while (map_pgsEntryIterator.hasNext()) {
+            Map.Entry<String, List<ProgressRecord>> next = map_pgsEntryIterator.next();
+            Iterator<ProgressRecord> progressRecordIterator = next.getValue().iterator();
+            while (progressRecordIterator.hasNext()) {
+                String id = progressRecordIterator.next().getId();
+                // 单个进展
+                JsonString progress = progressMapper.getProgress(tenant_access_token, id);
+                if (dateUtil.inThisWeek(new Date(Long.parseLong(progress.get("data").get("modify_time").string()))))
+                    map_pgs_js.put(id, progress);
+            }
+        }
+
+        return map_pgs_js;
+    }
+
+    private void filterUser(Map<String, OkrList> map) {
+        // TODO: 删除用户组内的成员
+        // TODO: 完善用户组查询
+    }
 }

@@ -13,6 +13,6 @@ import java.util.Map;
  */
 @Data
 public class BlockMessage {
-    List<Map<String, MultiTypeBlock>> children;
+    List<Object> children;
     int index = -1;
 }

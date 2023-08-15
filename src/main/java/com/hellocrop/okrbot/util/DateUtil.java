@@ -1,6 +1,7 @@
 package com.hellocrop.okrbot.util;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,10 +14,12 @@ import java.util.Date;
  * @project okrbot
  */
 @Data
+@Slf4j
 public class DateUtil {
 
     private final Calendar thisSat;
     private final Calendar lastSat;
+    private final Calendar lastLastSat;
     private DateFormat format;
 
 
@@ -24,6 +27,7 @@ public class DateUtil {
 
         Calendar thisSat = Calendar.getInstance();
         thisSat.setFirstDayOfWeek(Calendar.SUNDAY);
+        thisSat.setTime(new Date());
         thisSat.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
 
         // 上周六
@@ -31,10 +35,17 @@ public class DateUtil {
         lastSat.setTime(thisSat.getTime());
         lastSat.add(Calendar.DATE, -7);
 
+        // 上上周六
+        Calendar lastLastSat = Calendar.getInstance();
+        lastLastSat.setTime(thisSat.getTime());
+        lastLastSat.add(Calendar.DATE, -14);
+
         this.thisSat = thisSat;
         this.lastSat = lastSat;
+        this.lastLastSat = lastLastSat;
 
         format = new SimpleDateFormat("yyyyMMdd");
+        log.info(format.format(thisSat.getTime()) + " " + format.format(lastSat.getTime()) + " " + format.format(lastLastSat.getTime()));
     }
 
     public DateUtil(DateFormat format) {
@@ -46,20 +57,27 @@ public class DateUtil {
         // 上周六
         Calendar lastSat = Calendar.getInstance();
         lastSat.setTime(thisSat.getTime());
+        lastSat.add(Calendar.DATE, -7);
+
+        // 上上周六
+        Calendar lastLastSat = Calendar.getInstance();
+        lastSat.setTime(thisSat.getTime());
+        lastSat.add(Calendar.DATE, -14);
 
         this.thisSat = thisSat;
         this.lastSat = lastSat;
+        this.lastLastSat = lastLastSat;
+
         this.format = format;
     }
 
     public String string() {
-        return format.format(lastSat.getTime()) + "-" + format.format(thisSat.getTime());
+        return format.format(lastLastSat.getTime()) + "-" + format.format(lastSat.getTime());
     }
 
     public boolean inThisWeek(Date date) {
         Calendar record = Calendar.getInstance();
         record.setTime(date);
-        if (lastSat.before(record) && thisSat.after(record)) return true;
-        return false;
+        return lastLastSat.before(record) && lastSat.after(record);
     }
 }

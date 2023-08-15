@@ -1,0 +1,309 @@
+[
+  {
+    "code": 0,
+    "data": {
+      "content": {
+        "blocks": [
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "本周进展："
+                  },
+                  "type": "textRun"
+                }
+              ]
+            },
+            "type": "paragraph"
+          },
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "和北京宝兰德公司达成分销意向。"
+                  },
+                  "type": "textRun"
+                }
+              ],
+              "style": {
+                "list": {
+                  "indentLevel": 1,
+                  "type": "bullet"
+                }
+              }
+            },
+            "type": "paragraph"
+          },
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "挑战求助："
+                  },
+                  "type": "textRun"
+                }
+              ]
+            },
+            "type": "paragraph"
+          },
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "暂时无法确定分成比例，正在寻求有经验的人帮助，大家有建议私信我。"
+                  },
+                  "type": "textRun"
+                }
+              ],
+              "style": {
+                "list": {
+                  "indentLevel": 1,
+                  "type": "bullet"
+                }
+              }
+            },
+            "type": "paragraph"
+          },
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "风险同步："
+                  },
+                  "type": "textRun"
+                }
+              ]
+            },
+            "type": "paragraph"
+          },
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "对方客户画像是海关，政府，电信等央企，预算充足，私有云环境，不一定有 K8S，对供应商资质有要求。"
+                  },
+                  "type": "textRun"
+                }
+              ],
+              "style": {
+                "list": {
+                  "indentLevel": 1,
+                  "type": "bullet"
+                }
+              }
+            },
+            "type": "paragraph"
+          },
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "思考观点："
+                  },
+                  "type": "textRun"
+                }
+              ]
+            },
+            "type": "paragraph"
+          },
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "为什么要做这类项目的关键是我们要尽快验证客户价值，和客户共创，通过合同来验证事情做的对不对，并且加速产品成熟。"
+                  },
+                  "type": "textRun"
+                }
+              ],
+              "style": {
+                "list": {
+                  "indentLevel": 1,
+                  "type": "bullet"
+                }
+              }
+            },
+            "type": "paragraph"
+          },
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "下周计划："
+                  },
+                  "type": "textRun"
+                }
+              ]
+            },
+            "type": "paragraph"
+          },
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "到北京当面沟通合作协议细节。"
+                  },
+                  "type": "textRun"
+                }
+              ],
+              "style": {
+                "list": {
+                  "indentLevel": 1,
+                  "type": "bullet"
+                }
+              }
+            },
+            "type": "paragraph"
+          }
+        ]
+      },
+      "modify_time": "1691724319567",
+      "progress_id": "7265513686826696708"
+    },
+    "msg": "success"
+  },
+  {
+    "code": 0,
+    "data": {
+      "content": {
+        "blocks": [
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "本周进展：由"
+                  },
+                  "type": "textRun"
+                },
+                {
+                  "person": {
+                    "openId": "ou_dc0664d3d275ff2cbcbbd60450fde475"
+                  },
+                  "type": "person"
+                },
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "负责全年预算初稿"
+                  },
+                  "type": "textRun"
+                }
+              ]
+            },
+            "type": "paragraph"
+          },
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "下周计划：敲定全年预算"
+                  },
+                  "type": "textRun"
+                },
+                {
+                  "person": {
+                    "openId": "ou_80f012ab640bde78bcc18daa378a4f31"
+                  },
+                  "type": "person"
+                },
+                {
+                  "person": {
+                    "openId": "ou_05ab03d6f1fba287a2aa4e1decde4f12"
+                  },
+                  "type": "person"
+                },
+                {
+                  "person": {
+                    "openId": "ou_dc0664d3d275ff2cbcbbd60450fde475"
+                  },
+                  "type": "person"
+                }
+              ]
+            },
+            "type": "paragraph"
+          }
+        ]
+      },
+      "modify_time": "1691639873828",
+      "progress_id": "7265534423021961218"
+    },
+    "msg": "success"
+  },
+  {
+    "code": 0,
+    "data": {
+      "content": {
+        "blocks": [
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "接触一名 Kafka 专家，目前还未明确。"
+                  },
+                  "type": "textRun"
+                }
+              ],
+              "style": {
+                "list": {
+                  "indentLevel": 1,
+                  "number": 1,
+                  "type": "number"
+                }
+              }
+            },
+            "type": "paragraph"
+          },
+          {
+            "paragraph": {
+              "elements": [
+                {
+                  "textRun": {
+                    "style": {},
+                    "text": "前段时间 Offer 的实习生将于下周入职。"
+                  },
+                  "type": "textRun"
+                }
+              ],
+              "style": {
+                "list": {
+                  "indentLevel": 1,
+                  "number": 2,
+                  "type": "number"
+                }
+              }
+            },
+            "type": "paragraph"
+          }
+        ]
+      },
+      "modify_time": "1691737653775",
+      "progress_id": "7265955556669063172"
+    },
+    "msg": "success"
+  }
+]
