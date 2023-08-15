@@ -14,7 +14,6 @@ import java.util.Date;
  * @project okrbot
  */
 @Data
-@Slf4j
 public class DateUtil {
 
     private final Calendar thisSat;
@@ -45,7 +44,6 @@ public class DateUtil {
         this.lastLastSat = lastLastSat;
 
         format = new SimpleDateFormat("yyyyMMdd");
-        log.info(format.format(thisSat.getTime()) + " " + format.format(lastSat.getTime()) + " " + format.format(lastLastSat.getTime()));
     }
 
     public DateUtil(DateFormat format) {
@@ -76,6 +74,19 @@ public class DateUtil {
     }
 
     public boolean inThisWeek(Date date) {
+        Calendar record = Calendar.getInstance();
+        record.setTime(date);
+        return lastLastSat.before(record) && lastSat.after(record);
+    }
+    public boolean inThisWeek(String time) {
+        Date date = new Date(Long.parseLong(time));
+        Calendar record = Calendar.getInstance();
+        record.setTime(date);
+        return lastLastSat.before(record) && lastSat.after(record);
+    }
+
+    public boolean inThisWeek(Long time) {
+        Date date = new Date(time);
         Calendar record = Calendar.getInstance();
         record.setTime(date);
         return lastLastSat.before(record) && lastSat.after(record);

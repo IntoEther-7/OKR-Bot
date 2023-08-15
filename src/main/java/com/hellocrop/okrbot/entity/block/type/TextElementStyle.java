@@ -1,5 +1,6 @@
 package com.hellocrop.okrbot.entity.block.type;
 
+import com.hellocrop.okrbot.entity.contentblock.ContentTextStyle;
 import lombok.Data;
 
 import java.net.URLEncoder;
@@ -7,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Data
-public class TextElementStyle implements MultiTypeBlock {
+public class TextElementStyle {
     Boolean bold;
     Boolean italic;
     Boolean strikethrough;
@@ -21,8 +22,26 @@ public class TextElementStyle implements MultiTypeBlock {
     public TextElementStyle() {
     }
 
-    public TextElementStyle(String url) {
-        this.link = new Link(url);
-        text_color = 5;
+    public TextElementStyle(Boolean bold, Boolean italic, Boolean strikethrough, Boolean underline, Boolean inline_code, Integer background_color, Integer text_color, Link link, String[] comment_ids) {
+        this.bold = bold;
+        this.italic = italic;
+        this.strikethrough = strikethrough;
+        this.underline = underline;
+        this.inline_code = inline_code;
+        this.background_color = background_color;
+        this.text_color = text_color;
+        this.link = link;
+        this.comment_ids = comment_ids;
+    }
+
+    public static TextElementStyle fromContentTextStyle(ContentTextStyle contentTextStyle) {
+        if (contentTextStyle == null) return null;
+        TextElementStyle textElementStyle = new TextElementStyle();
+
+        textElementStyle.bold = contentTextStyle.getBold();
+        textElementStyle.strikethrough = contentTextStyle.getStrikeThrough();
+        textElementStyle.link = Link.fromContentLink(contentTextStyle.getLink());
+        // TODO 思考颜色转变
+        return textElementStyle;
     }
 }

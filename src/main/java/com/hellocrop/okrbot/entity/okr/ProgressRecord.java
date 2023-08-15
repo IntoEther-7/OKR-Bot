@@ -1,5 +1,6 @@
 package com.hellocrop.okrbot.entity.okr;
 
+import com.hellocrop.okrbot.entity.contentblock.ContentBlock;
 import lombok.Data;
 
 /**
@@ -9,5 +10,7 @@ import lombok.Data;
  */
 @Data
 public class ProgressRecord {
-    private String id;
+    String progress_id;
+    String modify_time;
+    ContentBlock content;
 }

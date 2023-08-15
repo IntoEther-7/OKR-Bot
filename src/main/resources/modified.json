@@ -1,8 +1,6 @@
 {
   "文本自然段":  {
-    "block_id": "FHJ8dpaPfoi9yqx99DncYU4Mnkb",
     "block_type": 2,
-    "parent_id": "II1Tdh3amoKLapxXfKScGgt9nmc",
     "text": {
       "elements": [
         {
@@ -25,7 +23,6 @@
     }
   },
   "无序列表自然段": {
-    "block_id": "HB9UdEtmToy4k0xXe3xcnTplnYf",
     "block_type": 12,
     "bullet": {
       "elements": [

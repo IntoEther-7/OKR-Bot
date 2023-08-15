@@ -2,6 +2,7 @@ package com.hellocrop.okrbot.dao;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hellocrop.okrbot.entity.JsonString;
+import com.hellocrop.okrbot.entity.okr.ProgressRecord;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -12,12 +13,9 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * @project okrbot
  */
 public class ProgressMapper {
-    public JsonString getProgress(String token, String pgsIdx) throws UnirestException, JsonProcessingException {
+    public ProgressRecord getProgress(String token, String pgsIdx) throws UnirestException, JsonProcessingException {
         Unirest.setTimeouts(0, 0);
-        HttpResponse<String> response =
-                Unirest.get("https://open.feishu.cn/open-apis/okr/v1/progress_records/%s".formatted(pgsIdx)).header(
-                        "Authorization", token).asString();
-
-        return new JsonString(response.getBody());
+        HttpResponse<String> response = Unirest.get("https://open.feishu.cn/open-apis/okr/v1/progress_records/%s".formatted(pgsIdx)).header("Authorization", token).asString();
+        return JsonString.objectMapper.readValue((new JsonString(response.getBody()).get("data").getString()), ProgressRecord.class);
     }
 }

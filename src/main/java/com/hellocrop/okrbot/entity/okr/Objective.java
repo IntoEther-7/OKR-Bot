@@ -1,5 +1,7 @@
 package com.hellocrop.okrbot.entity.okr;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hellocrop.okrbot.entity.okr.view.ProgressRecordSimplify;
 import lombok.Data;
 
 import java.util.List;
@@ -23,5 +25,7 @@ public class Objective {
     private String progress_report_last_updated_time; // 最后一次编辑备注的时间 毫秒
     private String score_last_updated_time; // 最后一次打分更新时间 毫秒
     private String deadline; // 截止时间 毫秒
-    private List<ProgressRecord> progress_record_list;
+    private List<ProgressRecordSimplify> progress_record_list;
+    @JsonIgnore
+    private List<ProgressRecord> progressRecords;
 }
