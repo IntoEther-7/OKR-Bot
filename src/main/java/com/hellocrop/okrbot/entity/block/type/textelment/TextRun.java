@@ -7,26 +7,31 @@ import lombok.Data;
 @Data
 public class TextRun {
     String content;
-    TextElementStyle style;
+    TextElementStyle text_element_style;
+
+    public void setContent(String content) {
+        if (content.endsWith("\n")) content = content.replaceAll("\n", "");
+        this.content = content;
+    }
 
     public TextRun() {
     }
 
     public TextRun(String content) {
-        this.content = content;
+        setContent(content);
     }
 
-    public TextRun(String content, TextElementStyle style) {
-        this.content = content;
-        this.style = style;
+    public TextRun(String content, TextElementStyle text_element_style) {
+        setContent(content);
+        this.text_element_style = text_element_style;
     }
 
     public static TextRun fromContenTextRunBlock(ContentTextRun contentTextRun) {
         if (contentTextRun == null) return null;
         TextRun textRunBlock = new TextRun();
 
-        textRunBlock.content = contentTextRun.getText();
-        textRunBlock.style = TextElementStyle.fromContentTextStyle(contentTextRun.getStyle());
+        textRunBlock.setContent(contentTextRun.getText());
+        textRunBlock.text_element_style = TextElementStyle.fromContentTextStyle(contentTextRun.getStyle());
 
         return textRunBlock;
     }

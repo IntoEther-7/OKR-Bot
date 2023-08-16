@@ -2,7 +2,6 @@ package com.hellocrop.okrbot.entity.block;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hellocrop.okrbot.entity.JsonString;
-import com.hellocrop.okrbot.entity.block.type.MultiTypeBlock;
 import com.hellocrop.okrbot.entity.contentblock.ContentBlockElement;
 import com.hellocrop.okrbot.entity.okr.ProgressRecord;
 import lombok.Data;
@@ -10,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author IntoEther-7

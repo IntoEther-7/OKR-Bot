@@ -21,8 +21,9 @@ public class ObjectiveView {
 
         objectiveView.objIdx = objective.getId();
 
-        objectiveView.block = TextBlock.simpleTextBlock("O%d: %s".formatted(objIdx, objective.getContent()));
+        objectiveView.block = TextBlock.simpleTextBlock("O%d:  %s".formatted(objIdx, objective.getContent()));
 
+        // KR
         objectiveView.keyResultViews = new LinkedList<>();
         List<KeyResult> krList = objective.getKr_list();
         for (int i = 0; i < krList.size(); i++) {
@@ -30,6 +31,7 @@ public class ObjectiveView {
             objectiveView.keyResultViews.add(KeyResultView.fromKeyResult(keyResult, objIdx, i + 1));
         }
 
+        // P
         objectiveView.progressViews = new LinkedList<>();
         for (ProgressRecord progressRecord : objective.getProgressRecords()) {
             objectiveView.progressViews.add(ProgressView.fromProgressRecord(progressRecord));

@@ -1,6 +1,7 @@
 package com.hellocrop.okrbot.entity.block.type;
 
 import com.hellocrop.okrbot.entity.contentblock.ContentTextStyle;
+import lombok.Builder;
 import lombok.Data;
 
 import java.net.URLEncoder;
@@ -8,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Data
+@Builder
 public class TextElementStyle {
     Boolean bold;
     Boolean italic;
@@ -19,24 +21,10 @@ public class TextElementStyle {
     Link link;
     String[] comment_ids;
 
-    public TextElementStyle() {
-    }
-
-    public TextElementStyle(Boolean bold, Boolean italic, Boolean strikethrough, Boolean underline, Boolean inline_code, Integer background_color, Integer text_color, Link link, String[] comment_ids) {
-        this.bold = bold;
-        this.italic = italic;
-        this.strikethrough = strikethrough;
-        this.underline = underline;
-        this.inline_code = inline_code;
-        this.background_color = background_color;
-        this.text_color = text_color;
-        this.link = link;
-        this.comment_ids = comment_ids;
-    }
 
     public static TextElementStyle fromContentTextStyle(ContentTextStyle contentTextStyle) {
         if (contentTextStyle == null) return null;
-        TextElementStyle textElementStyle = new TextElementStyle();
+        TextElementStyle textElementStyle = TextElementStyle.builder().build();
 
         textElementStyle.bold = contentTextStyle.getBold();
         textElementStyle.strikethrough = contentTextStyle.getStrikeThrough();

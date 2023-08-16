@@ -10,17 +10,18 @@ import java.util.List;
 
 @Data
 public class UserView {
-    String useIdx;
+    String userIdx;
+    String numIdx; // 不知从何获取
     TextBlock block;
     List<OkrView> okrViews; // 一系列目标
 
     public static UserView fromOkrList(OkrList okrList) {
         UserView userView = new UserView();
 
-        userView.useIdx = okrList.getUserId();
+        userView.userIdx = okrList.getUserId();
 
         // 处理block
-        userView.block = TextBlock.mentionUserBlock(userView.useIdx);
+        userView.block = TextBlock.mentionUserBlock(userView.userIdx);
 
         // 处理OkrList为List<OkrView>
         userView.okrViews = new LinkedList<>();

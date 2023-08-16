@@ -24,12 +24,13 @@ public class DateUtil {
 
     public DateUtil() {
 
+        // 这周日
         Calendar thisSat = Calendar.getInstance();
         thisSat.setFirstDayOfWeek(Calendar.SUNDAY);
         thisSat.setTime(new Date());
         thisSat.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
 
-        // 上周六
+        // 上周日
         Calendar lastSat = Calendar.getInstance();
         lastSat.setTime(thisSat.getTime());
         lastSat.add(Calendar.DATE, -7);

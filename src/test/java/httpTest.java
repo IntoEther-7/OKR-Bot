@@ -105,4 +105,9 @@ public class httpTest {
     public void test4() throws Exception{
         new DocumentMapper().cleanDocument("Bearer t-g1048ehV7RXO5KWJNQ6TAJ6ZJOZ3NDJ4X4R5KJO2", "LWwEdu9jtolxZPxxXO1coO66nAc");
     }
+
+    @Test
+    public void test5() throws Exception {
+        new OkrService(7).weekReport("cli_a45f78cb4a79500e", "9ZIvC5EoYrqHqMSBE6agV62t7IWBrvzT");
+    }
 }

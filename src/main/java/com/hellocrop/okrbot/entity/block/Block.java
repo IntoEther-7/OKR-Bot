@@ -1,19 +1,12 @@
 package com.hellocrop.okrbot.entity.block;
 
 import com.hellocrop.okrbot.entity.block.type.BlockType;
-import com.hellocrop.okrbot.entity.block.type.MultiTypeBlock;
 import com.hellocrop.okrbot.entity.block.type.TextBlock;
-import com.hellocrop.okrbot.entity.block.type.textelment.TextElement;
-import com.hellocrop.okrbot.entity.contentblock.ContentBlock;
 import com.hellocrop.okrbot.entity.contentblock.ContentBlockElement;
-import com.hellocrop.okrbot.entity.contentblock.ContentParagraph;
-import com.hellocrop.okrbot.entity.contentblock.ContentParagraphElement;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

@@ -1,7 +1,5 @@
 package com.hellocrop.okrbot.entity.block.type.textelment;
 
-import com.hellocrop.okrbot.entity.block.type.MultiTypeBlock;
-import com.hellocrop.okrbot.entity.block.type.TextElementStyle;
 import com.hellocrop.okrbot.entity.contentblock.ContentParagraphElement;
 import lombok.Data;
 

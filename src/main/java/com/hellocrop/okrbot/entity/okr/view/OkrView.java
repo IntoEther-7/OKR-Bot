@@ -12,12 +12,15 @@ import java.util.List;
 public class OkrView {
     String okrIdx;
     TextBlock block;
+    String name;
     List<ObjectiveView> objectiveViews;
 
     public static OkrView fromOkr(Okr okr) {
         OkrView okrView = new OkrView();
 
         okrView.okrIdx = okr.getId();
+
+        okrView.name = okr.getName();
 
         okrView.block = TextBlock.simpleTextBlock(okr.getName());
 

@@ -18,7 +18,7 @@ public class ProgressView {
 
         progressView.pgsIdx = progressRecord.getProgress_id();
 
-        progressView.blockMessage = BlockMessage.fromProgressRecord(progressRecord); // TODO
+        progressView.blockMessage = BlockMessage.fromProgressRecord(progressRecord);
 
         return progressView;
     }

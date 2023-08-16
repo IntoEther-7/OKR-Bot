@@ -20,7 +20,7 @@ public class KeyResultView {
 
         keyResultView.krIdx = keyResult.getId();
 
-        keyResultView.block = TextBlock.simpleTextBlock("O%dKR%d: %s".formatted(objIdx, krIdx, keyResult.getContent()));
+        keyResultView.block = TextBlock.simpleTextBlock("O%dKR%d:  %s".formatted(objIdx, krIdx, keyResult.getContent()));
 
         keyResultView.progressViews = new LinkedList<>();
         for (ProgressRecord progressRecord : keyResult.getProgressRecords()) {

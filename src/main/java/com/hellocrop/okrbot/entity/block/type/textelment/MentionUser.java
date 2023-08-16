@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class MentionUser {
     String user_id;
-    TextElementStyle style;
+    TextElementStyle text_element_style;
 
     public MentionUser() {
 
@@ -17,9 +17,9 @@ public class MentionUser {
         this.user_id = user_id;
     }
 
-    public MentionUser(String user_id, TextElementStyle style) {
+    public MentionUser(String user_id, TextElementStyle text_element_style) {
         this.user_id = user_id;
-        this.style = style;
+        this.text_element_style = text_element_style;
     }
 
     public static MentionUser fromContentPerson(ContentPerson contentPerson) {
