@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.hellocrop.okrbot.dao.*;
 import com.hellocrop.okrbot.entity.JsonString;
 import com.hellocrop.okrbot.entity.block.Block;
+import com.hellocrop.okrbot.entity.block.BlockMessage;
 import com.hellocrop.okrbot.entity.block.type.BlockType;
 import com.hellocrop.okrbot.entity.block.type.TextBlock;
 import com.hellocrop.okrbot.entity.okr.*;
@@ -36,6 +37,7 @@ public class OkrService {
 
         List<String> userIdxList = getAllEmployee();
 
+        List<Block> allUserBlock = new LinkedList<>();
         for (String userIdx : userIdxList) {
             // 根据人员获取OKR
             JsonString okrsByEmployer = getOkrsByEmployer(userIdx);
@@ -45,9 +47,30 @@ public class OkrService {
             // TODO
             UserView userView = parseOne(okrList, true);
 
-            // 构建这个人的block
-            constructBlock(userView);
+            // 构建这个人的blocks
+            allUserBlock.addAll(constructBlock(userView));
         }
+
+        // 分割blocks
+        List<BlockMessage> blockMessages = splitBlocks(50, allUserBlock);
+
+        // 知道是需要更新哪个文档
+        String documentId = getDocumentId();
+
+        // 发送到对应文档
+        DocumentMapper documentMapper = new DocumentMapper();
+        documentMapper.cleanDocument(tenant_access_token, documentId);
+        for (BlockMessage blockMessage : blockMessages) {
+            // JsonString.objectMapper.writeValueAsString(blockMessage)
+            blockMessage.check();
+            documentMapper.insertDocument(tenant_access_token, documentId, blockMessage);
+        }
+
+        // 发送给对应的人
+        new MessageMapper().send2Person(tenant_access_token, "ou_d37e7a78deaefb355cc3390f224e5900", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
+
+        // log
+        log.info("结束");
     }
 
     private List<String> getAllEmployee() throws UnirestException, IOException {
@@ -91,75 +114,6 @@ public class OkrService {
         return new OkrList(userIdx, okrs);
     }
 
-//    // 获取个人进展转变为block
-//    private List<Object> pgs2block(List<ProgressRecord> progressRecords) throws UnirestException, JsonProcessingException {
-//        List<Object> blocks = new LinkedList<>();
-//
-//        ProgressMapper progressMapper = new ProgressMapper();
-//        Iterator<ProgressRecord> iterator = progressRecords.iterator();
-//        while (iterator.hasNext()) {
-//            ProgressRecord next = iterator.next();
-//            JsonString progress = progressMapper.getProgress(tenant_access_token, next.getId());
-//
-//            // 判断时间对不对, 是不是这周的
-//            Date before = new Date(Long.parseLong(progress.get("data").get("modify_time").string()));
-//            if (dateUtil.inThisWeek(before)) {
-//                List<Object> pgsBlock = JsonString.objectMapper.readValue(JsonString.objectMapper.writeValueAsString(progress.get("data").get("content").get("block").getNode()), new TypeReference<>() {
-//                });
-//                blocks.add(pgsBlock);
-//            }
-//        }
-//        return blocks;
-//
-//    }
-//
-//    // 获取每个人的进展具体内容，返回map
-//    private Map<String, List<JsonString>> getAllPgs(Map<String, OkrList> okrListMap) throws UnirestException, JsonProcessingException {
-//        Map<String, List<JsonString>> map_pgs_js = new LinkedHashMap<>();
-//
-//        Map<String, List<ProgressRecord>> map_pgs = new OkrUtil(okrListMap).getMap_pgs();
-//        ProgressMapper progressMapper = new ProgressMapper();
-//        Iterator<Map.Entry<String, List<ProgressRecord>>> map_pgsEntryIterator = map_pgs.entrySet().iterator();
-//        while (map_pgsEntryIterator.hasNext()) {
-//            Map.Entry<String, List<ProgressRecord>> next = map_pgsEntryIterator.next();
-//            Iterator<ProgressRecord> progressRecordIterator = next.getValue().iterator();
-//            while (progressRecordIterator.hasNext()) {
-//                // 单个进展
-//                JsonString progress = progressMapper.getProgress(tenant_access_token, progressRecordIterator.next().getId());
-//                if (!map_pgs_js.containsKey(next.getKey())) {
-//                    map_pgs_js.put(next.getKey(), new LinkedList<>());
-//                }
-//                map_pgs_js.get(next.getKey()).add(progress);
-//            }
-//            if (!map_pgs_js.containsKey(next.getKey())) {
-//                map_pgs_js.put(next.getKey(), null);
-//            }
-//        }
-//
-//        return map_pgs_js;
-//    }
-//
-//
-//    private Map<String, JsonString> id2pgs(Map<String, OkrList> okrListMap) throws UnirestException, JsonProcessingException {
-//        Map<String, JsonString> map_pgs_js = new LinkedHashMap<>();
-//
-//        Map<String, List<ProgressRecord>> map_pgs = new OkrUtil(okrListMap).getMap_pgs();
-//        ProgressMapper progressMapper = new ProgressMapper();
-//        Iterator<Map.Entry<String, List<ProgressRecord>>> map_pgsEntryIterator = map_pgs.entrySet().iterator();
-//        while (map_pgsEntryIterator.hasNext()) {
-//            Map.Entry<String, List<ProgressRecord>> next = map_pgsEntryIterator.next();
-//            Iterator<ProgressRecord> progressRecordIterator = next.getValue().iterator();
-//            while (progressRecordIterator.hasNext()) {
-//                String id = progressRecordIterator.next().getId();
-//                // 单个进展
-//                JsonString progress = progressMapper.getProgress(tenant_access_token, id);
-//                if (dateUtil.inThisWeek(new Date(Long.parseLong(progress.get("data").get("modify_time").string()))))
-//                    map_pgs_js.put(id, progress);
-//            }
-//        }
-//
-//        return map_pgs_js;
-//    }
 
     /**
      * 解析一个人的OkrList
@@ -209,76 +163,126 @@ public class OkrService {
         return userView;
     }
 
-    private void constructBlock(UserView userView) {
-        List<Block> blocks = new LinkedList<>();
-
-        blocks.add(Block.builder().block_type(BlockType.HEADING1.type).heading1(userView.getBlock()).build());
-
+    private List<Block> constructBlock(UserView userView) {
         // 遍历整棵树，找到有Progress的路径，封装一条Block
-        for (OkrView okrView : userView.getOkrViews()) {
-            if (okrView.getObjectiveViews().isEmpty()) {
-                // 如果没有目标
-                continue;
-            } else {
-                // 如果有目标，遍历目标
-                for (ObjectiveView objectiveView : okrView.getObjectiveViews()) {
-                    // kr
-                    if (objectiveView.getKeyResultViews().isEmpty()) {
-                        // 如果没有kr
-                        continue;
-                    } else {
-                        // 如果有kr，遍历kr
-                        for (KeyResultView keyResultView : objectiveView.getKeyResultViews()) {
-
-                        }
-                    }
-                    // progress
-                    if (objectiveView.getProgressViews().isEmpty()) {
-                        // 如果没有progress
-                        continue;
-                    } else {
-                        // 如果有progress，遍历progress，想办法取出blocks并写入
-
-                    }
-                }
-            }
-        }
-        return;
+        return travelOkrView(userView);
     }
 
     private List<Block> travelOkrView(UserView userView) {
         List<Block> blocks = new LinkedList<>(); // 存储目标和下层的
-        // 尝试遍历OkrView
-        for (OkrView okrView : userView.getOkrViews()) {
 
+        // 如果有信息，加入自身(User)和下层(Okr/显示未找到进展/显示未设置 OKR)信息
+        // 加入用户信息
+
+
+        // 无Okr -> "未设置 OKR" -> 只包含user信息
+        // TODO: 如果需要显示，需要修改上层逻辑
+
+        // 有Okr -> 无进展数据 -> 第二个block为null
+        // TODO: 如果需要显示，需要修改上层逻辑
+
+        List<Block> other = new LinkedList<>();
+        for (OkrView okrView : userView.getOkrViews()) {
+            // 对每个OkrView，遍历下层(Objective)
+            List<Block> ov = travelObjectiveView(okrView);
+            if (!ov.isEmpty()) {
+                blocks.add(Block.builder().block_type(BlockType.HEADING1.type).heading1(TextBlock.mentionUserBlock(userView.getUseIdx())).build());
+                other.addAll(ov);
+            }
         }
+
+        blocks.addAll(other);
+
         return blocks;
     }
 
     private List<Block> travelObjectiveView(OkrView okrView) {
         List<Block> blocks = new LinkedList<>(); // 存储目标和下层的
-        // 尝试遍历ObjectiveView
-
+        // 如果有信息，加入自身(Okr)和下层(Objective)信息
+        for (ObjectiveView objectiveView : okrView.getObjectiveViews()) {
+            // 对每个ObjectiveView，遍历KeyResult和ProgressView
+            List<Block> pv = travelKeyResultAndProgressView(objectiveView);
+            if (!pv.isEmpty()) {
+                blocks.add(Block.builder().block_type(BlockType.HEADING3.type).heading3(okrView.getBlock()).build());
+                blocks.addAll(pv);
+            }
+        }
         return blocks;
     }
 
-    private List<Block> travelKeyResultView(ObjectiveView objectiveView) {
+    private List<Block> travelKeyResultAndProgressView(ObjectiveView objectiveView) {
         List<Block> blocks = new LinkedList<>(); // 存储目标和下层的
+        // 如果有信息，加入自身(Objective)和下层(Progress)信息
+        // 获取所有PR，不为空加入object描述信息和pr
+        List<Block> pr = travelProgressView(objectiveView);
+        if (!pr.isEmpty()) {
+            blocks.add(Block.builder().block_type(BlockType.HEADING4.type).heading4(objectiveView.getBlock()).build());
+            blocks.addAll(pr);
+        }
+
+        // 如果有信息，加入自身(Objective)和下层(KeyResult)信息
+        // KR->PR遍历，不为空加入kr描述信息和progress
+        for (KeyResultView keyResultView : objectiveView.getKeyResultViews()) {
+            List<Block> kr_pr = travelProgressView(keyResultView);
+            if (!kr_pr.isEmpty()) {
+                blocks.add(Block.builder().block_type(BlockType.HEADING4.type).heading4(keyResultView.getBlock()).build());
+                blocks.addAll(kr_pr);
+            }
+        }
 
         return blocks;
     }
 
     private List<Block> travelProgressView(ObjectiveView objectiveView) {
-        List<Block> blocks = new LinkedList<>(); // 存储目标和下层的
+        List<Block> blocks = new LinkedList<>(); // 存储Progress
+
+        // 底层，只能加入自身信息（Progress）
+        for (ProgressView progressView : objectiveView.getProgressViews()) {
+            blocks.addAll(progressView.getBlockMessage().getChildren());
+        }
 
         return blocks;
     }
 
     private List<Block> travelProgressView(KeyResultView keyResultView) {
-        List<Block> blocks = new LinkedList<>(); // 存储目标和下层的
-        for (ProgressView progressView : keyResultView.getProgressViews()) {
+        List<Block> blocks = new LinkedList<>(); // 存储Progress
 
+        // 底层，只能加入自身信息（Progress）
+        for (ProgressView progressView : keyResultView.getProgressViews()) {
+            blocks.addAll(progressView.getBlockMessage().getChildren());
         }
         return blocks;
+    }
+
+    // 分片
+    private List<BlockMessage> splitBlocks(int max, List<Block> blocks) {
+        List<BlockMessage> blockMessages = new LinkedList<>();
+
+        assert max > 0 && max <= 50;
+        int curr = 0;
+        while (curr < blocks.size()) {
+            List<Block> slice = new ArrayList<>(max);
+            slice.addAll(blocks.subList(curr, Math.min(curr + max, blocks.size())));
+
+            BlockMessage blockMessage = new BlockMessage();
+            blockMessage.setChildren(slice);
+            blockMessages.add(blockMessage);
+
+            curr += max;
+        }
+        return blockMessages;
+    }
+
+    private String getDocumentId() throws UnirestException, JsonProcessingException {
+
+        String documentId;
+        DocumentCheckUtil documentCheckUtil = new DocumentCheckUtil();
+        if (documentCheckUtil.getDocumentIdThisWeek(documentName) == null) {
+            documentId = new DocumentMapper().newDocument(tenant_access_token, documentName);
+            documentCheckUtil.insertDocumentIdThisWeek(documentName, documentId);
+        } else {
+            documentId = documentCheckUtil.getDocumentIdThisWeek(documentName);
+        }
+        return documentId;
     }
 }

@@ -10,7 +10,9 @@ import com.hellocrop.okrbot.entity.contentblock.ContentParagraph;
 import com.hellocrop.okrbot.entity.contentblock.ContentParagraphElement;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,12 +21,9 @@ import java.util.Map;
  * @date 2023/8/13 12:54
  * @project okrbot
  */
-@Data
 @Builder
-/**
- * 一个能够插入的块
- */ public class Block {
-
+@Data
+public class Block {
     private Integer block_type;
 
     private TextBlock text;
@@ -47,16 +46,9 @@ import java.util.Map;
     // TODO Image
     // TODO 支持更多块
 
-    public Block() {
-
-    }
-
-    public Block(BlockType blockType) {
-        block_type = blockType.type;
-    }
 
     public static Block fromContentBlockElement(ContentBlockElement contentBlockElement) {
-        Block block = new Block();
+        Block block = null;
 
         switch (contentBlockElement.getType()) {
             case "paragraph":
@@ -64,9 +56,9 @@ import java.util.Map;
                 Map<String, TextBlock> map = TextBlock.fromContentParagraph(contentBlockElement.getParagraph());
                 for (Map.Entry<String, TextBlock> entry : map.entrySet()) {
                     switch (entry.getKey()) {
-                        case "text" -> block.text = entry.getValue();
-                        case "number" -> block.ordered = entry.getValue();
-                        case "bullet" -> block.bullet = entry.getValue();
+                        case "text" -> block = Block.builder().block_type(BlockType.TEXT.type).text(entry.getValue()).build(); //block.text = entry.getValue()
+                        case "number" -> block = Block.builder().block_type(BlockType.ORDERED.type).ordered(entry.getValue()).build(); // block.ordered = entry.getValue()
+                        case "bullet" -> block = Block.builder().block_type(BlockType.BULLET.type).bullet(entry.getValue()).build(); // block.bullet = entry.getValue()
                         case "checkBox" -> block = null;
                         case "checkedBox" -> block = null;
                         case "indent" -> block = null;
@@ -81,4 +73,26 @@ import java.util.Map;
 
         return block;
     }
+
+    public void check() throws IllegalAccessException {
+        Field[] fields = this.getClass().getFields();
+
+        assert block_type != null;
+        BlockType blockType = BlockType.id2BlockType(block_type);
+
+        for (Field field : fields) {
+            String fieldName = field.getName(); // 属性名
+            if (fieldName.equals(blockType) || fieldName.equals("block_type")) {
+                // 应该不为空
+                assert field.get(this) != null;
+            } else {
+                // 应该为空
+                assert field.get(this) == null;
+            }
+        }
+    }
 }
+
+
+
+

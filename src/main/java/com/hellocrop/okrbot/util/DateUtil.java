@@ -69,6 +69,30 @@ public class DateUtil {
         this.format = format;
     }
 
+    public DateUtil(int day) {
+        Calendar thisSat = Calendar.getInstance();
+        thisSat.setFirstDayOfWeek(Calendar.SUNDAY);
+        thisSat.setTime(new Date());
+        thisSat.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        thisSat.add(Calendar.DATE, day);
+
+        // 上周六
+        Calendar lastSat = Calendar.getInstance();
+        lastSat.setTime(thisSat.getTime());
+        lastSat.add(Calendar.DATE, -7);
+
+        // 上上周六
+        Calendar lastLastSat = Calendar.getInstance();
+        lastLastSat.setTime(thisSat.getTime());
+        lastLastSat.add(Calendar.DATE, -14);
+
+        this.thisSat = thisSat;
+        this.lastSat = lastSat;
+        this.lastLastSat = lastLastSat;
+
+        format = new SimpleDateFormat("yyyyMMdd");
+    }
+
     public String string() {
         return format.format(lastLastSat.getTime()) + "-" + format.format(lastSat.getTime());
     }

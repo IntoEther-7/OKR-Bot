@@ -1,6 +1,7 @@
 package com.hellocrop.okrbot.dao;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.hellocrop.okrbot.entity.JsonString;
 import com.hellocrop.okrbot.entity.block.BlockMessage;
 import com.mashape.unirest.http.HttpResponse;
@@ -25,12 +26,15 @@ public class DocumentMapper {
      * @throws UnirestException
      * @throws JsonProcessingException
      */
-    public JsonString newDocument(String tenant_access_token, String documentName) throws UnirestException, JsonProcessingException {
+    public String newDocument(String tenant_access_token, String documentName) throws UnirestException, JsonProcessingException {
 
         Unirest.setTimeouts(0, 0);
         HttpResponse<String> response = Unirest.post("https://open.feishu.cn/open-apis/docx/v1/documents").header("Content-Type", "application/x-www-form-urlencoded").header("Authorization", tenant_access_token).field("folder_token", folderToken).field("title", documentName).asString();
 
-        return new JsonString(response.getBody());
+        JsonNode jsonNode = JsonString.objectMapper.readTree(response.getBody());
+        String text = jsonNode.get("data").get("document").get("document_id").asText();
+
+        return text;
     }
 
     public JsonString cleanDocument(String tenant_access_token, String documentId) throws UnirestException, JsonProcessingException {
@@ -43,4 +47,4 @@ public class DocumentMapper {
     public JsonString insertDocument(String tenant_access_token, String documentId, BlockMessage blockMessage) throws UnirestException, JsonProcessingException {
         return blockMapper.insertBlock(tenant_access_token, documentId, documentId, blockMessage);
     }
-    }
+}
