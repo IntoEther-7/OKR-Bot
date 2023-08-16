@@ -1,5 +1,7 @@
 package com.hellocrop;
 
+import com.hellocrop.okrbot.service.OkrService;
+
 /**
  * @author IntoEther-7
  * @date ${DATE} ${TIME}
@@ -7,6 +9,10 @@ package com.hellocrop;
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        try {
+            new OkrService().weekReport(System.getenv("APP_ID"),System.getenv("APP_SECRET"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

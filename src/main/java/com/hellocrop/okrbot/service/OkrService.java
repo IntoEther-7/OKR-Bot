@@ -31,9 +31,6 @@ public class OkrService {
     public OkrService() {
     }
 
-    public OkrService(int day) {
-        this.dateUtil = new DateUtil(day);
-    }
 
     public void weekReport(String appId, String appSecret) throws Exception {
         // 鉴权
