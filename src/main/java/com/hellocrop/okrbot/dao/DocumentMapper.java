@@ -62,8 +62,8 @@ public class DocumentMapper {
 
         JsonNode jsonNode = JsonString.objectMapper.readTree(response.getBody()).get("data").get("files");
         for (int i = 0; i < jsonNode.size(); i++) {
-            String name = jsonNode.get("name").toString();
-            String token = jsonNode.get("token").toString();
+            String name = jsonNode.get(i).get("name").asText();
+            String token = jsonNode.get(i).get("token").asText();
             docMap.put(name, token);
         }
 

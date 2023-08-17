@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author IntoEther-7
@@ -42,7 +43,7 @@ public class DateUtil {
         this.thisSun = thisMon;
         this.lastSun = lastMon;
 
-        format = new SimpleDateFormat("yyyyMMdd");
+        format = new SimpleDateFormat("yyyyMMdd", Locale.CHINA);
     }
 
     public DateUtil(DateFormat format) {
@@ -103,10 +104,7 @@ public class DateUtil {
     }
 
     public boolean inThisWeek(String time) {
-        Date date = new Date(Long.parseLong(time));
-        Calendar record = Calendar.getInstance();
-        record.setTime(date);
-        return lastSun.before(record) && thisSun.after(record);
+        return inThisWeek(new Date(Long.parseLong(time)));
     }
 
     public boolean inThisWeek(Long time) {
