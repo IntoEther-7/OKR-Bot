@@ -42,14 +42,14 @@ jobs:
           cache: maven
 
       - name: Restore Maven Cache
-        uses: actions/cache/restore@3.2.2
+        uses: actions/cache/restore@3.2.1
         id: m2_restore
         with:
           path: ~/.m2 # 缓存还原的位置
           key: m2
 
       - name: Restore Document List Cache
-        uses: actions/cache/restore@3.2.2
+        uses: actions/cache/restore@3.2.1
         id: doc_restore
         with:
           path: ~/.di # 缓存还原的位置
@@ -62,14 +62,14 @@ jobs:
         run: java -jar target/okr-boot.jar
 
       - name: Cache Maven Packages # 存储Maven仓库
-        uses: actions/cache/save@3.2.2
+        uses: actions/cache/save@3.2.1
         id: m2_store
         with:
           path: ~/.m2 # 缓存还原的位置
           key: m2 # 键
 
       - name: Cache Document List # 存储文档信息
-        uses: actions/cache/save@3.2.2
+        uses: actions/cache/save@3.2.1
         id: doc_store
         with:
           path: ~/.di # 缓存还原的位置
