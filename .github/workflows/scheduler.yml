@@ -9,9 +9,11 @@
 name: Java CI with Maven
 
 on:
-  push:
-    branches:
-      - master
+  #  push:
+  #    branches:
+  #      - master
+  schedule:
+    - cron: '0,5,10,15,20,25,30,35,40,45,50,55 * * * *'
   # schedule:
   #           # 分钟 小时 几号 几月 星期几
   #           # ┌───────────── minute (0 - 59)
