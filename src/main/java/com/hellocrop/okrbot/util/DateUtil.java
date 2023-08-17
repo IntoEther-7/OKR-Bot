@@ -6,7 +6,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * @author IntoEther-7
@@ -43,7 +42,7 @@ public class DateUtil {
         this.thisSun = thisMon;
         this.lastSun = lastMon;
 
-        format = new SimpleDateFormat("yyyyMMdd", Locale.CHINA);
+        format = new SimpleDateFormat("yyyyMMdd");
     }
 
     public DateUtil(DateFormat format) {

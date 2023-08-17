@@ -21,7 +21,7 @@ public class BlockGenerator {
     public static void insertIntro(List<Block> content) {
         content.add(0, Block.builder().block_type(BlockType.TEXT.type).text(TextBlock.simpleTextBlock("本文档由办公自动化系统根据 OKR 的进展自动生成，用于向全员同步短期进展和计划，推荐大家对具体进展直接在此份文档中通过评论来讨论。")).build());
         Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.CHINA);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
         content.add(1, Block.builder().block_type(BlockType.TEXT.type).text(TextBlock.simpleTextBlock("最后更新时间：%s".formatted(dateFormat.format(date)))).build());
         content.add(2, Block.builder().block_type(BlockType.TEXT.type).text(TextBlock.simpleTextBlock("")).build());
