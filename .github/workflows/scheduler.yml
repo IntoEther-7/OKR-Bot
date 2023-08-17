@@ -46,9 +46,9 @@ jobs:
         with:
           path: ~/.m2 # 缓存还原的位置
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} # 键
-          restore-keys:
-            ｜${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} # 寻找任何匹配的键来恢复
-            ｜${{ runner.os }}-m2- # 寻找任何匹配的键来恢复
+          restore-keys: ｜
+            ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} # 寻找任何匹配的键来恢复
+            ${{ runner.os }}-m2- # 寻找任何匹配的键来恢复
 
       - name: Cache Document List
         uses: actions/cache@3
