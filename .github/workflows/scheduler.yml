@@ -45,10 +45,8 @@ jobs:
         uses: actions/cache@v1.2.1
         with:
           path: ~/.m2 # 缓存还原的位置
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} # 键
-          restore-keys: |
-            ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} # 寻找任何匹配的键来恢复
-            ${{ runner.os }}-m2- # 寻找任何匹配的键来恢复
+          key: m2 # 键
+          restore-keys: m2
 
       - name: Build with Maven # 编译包
         run: mvn -B package --file pom.xml
