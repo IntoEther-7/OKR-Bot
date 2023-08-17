@@ -42,7 +42,7 @@ jobs:
           cache: maven
 
       - name: Cache Maven Packages # 缓存Maven仓库
-        uses: actions/cache@v3
+        uses: actions/cache@v1.2.1
         with:
           path: ~/.m2 # 缓存还原的位置
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} # 键
@@ -51,7 +51,7 @@ jobs:
             ${{ runner.os }}-m2- # 寻找任何匹配的键来恢复
 
       - name: Cache Document List
-        uses: actions/cache@3
+        uses: actions/cache@v1.2.1
         with:
           path: ~/DocumentInfo # 缓存还原的位置
           key: ${{ runner.os }}-DocumentInfo # 键
