@@ -8,13 +8,18 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author IntoEther-7
  * @date 2023/8/13 11:10
  * @project okrbot
  */
 public class DocumentMapper {
-    private final String folderToken = "Pg1BfZ7sOl1gRCdHpm2ckxX0nnd";
+    private final String folderToken = "XfdTf6VPklVbRXdKbkVcdcT8nxf";
     private final BlockMapper blockMapper = new BlockMapper();
 
     /**
@@ -46,5 +51,22 @@ public class DocumentMapper {
 
     public JsonString insertDocument(String tenant_access_token, String documentId, BlockMessage blockMessage) throws UnirestException, JsonProcessingException {
         return blockMapper.insertBlock(tenant_access_token, documentId, documentId, blockMessage);
+    }
+
+    public Map<String, String> documentMap(String tenant_access_token) throws UnirestException, JsonProcessingException {
+        Map<String, String> docMap = new LinkedHashMap<>();
+
+        Unirest.setTimeouts(0, 0);
+        HttpResponse<String> response = Unirest.get("https://open.feishu.cn/open-apis/drive/v1/files?direction=DESC&folder_token=%s&order_by=EditedTime&page_size=200".formatted(folderToken)).header("Authorization", tenant_access_token).asString();
+
+
+        JsonNode jsonNode = JsonString.objectMapper.readTree(response.getBody()).get("data").get("files");
+        for (int i = 0; i < jsonNode.size(); i++) {
+            String name = jsonNode.get("name").toString();
+            String token = jsonNode.get("token").toString();
+            docMap.put(name, token);
+        }
+
+        return docMap;
     }
 }

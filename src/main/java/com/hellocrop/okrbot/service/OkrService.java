@@ -64,10 +64,17 @@ public class OkrService {
         List<BlockMessage> blockMessages = splitBlocks(50, content);
 
         // 知道是需要更新哪个文档
-        String documentId = getDocumentId();
+        // String documentId = getDocumentId();
+        String documentId;
+        DocumentMapper documentMapper = new DocumentMapper();
+        Map<String, String> documentMap = documentMapper.documentMap(tenant_access_token);
+        if (documentMap.containsKey(documentName)) {
+            documentId = documentMap.get(documentName);
+        } else {
+            documentId = documentMapper.newDocument(tenant_access_token, documentName);
+        }
 
         // 发送到对应文档
-        DocumentMapper documentMapper = new DocumentMapper();
         documentMapper.cleanDocument(tenant_access_token, documentId);
         for (BlockMessage blockMessage : blockMessages) {
             // JsonString.objectMapper.writeValueAsString(blockMessage)
@@ -196,6 +203,7 @@ public class OkrService {
         return blockMessages;
     }
 
+    @Deprecated
     private String getDocumentId() throws UnirestException, JsonProcessingException {
 
         String documentId;
