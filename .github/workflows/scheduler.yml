@@ -50,17 +50,17 @@ jobs:
             ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} # 寻找任何匹配的键来恢复
             ${{ runner.os }}-m2- # 寻找任何匹配的键来恢复
 
+      - name: Build with Maven # 编译包
+        run: mvn -B package --file pom.xml
+
+      - name: Run main class
+        run: java -jar target/okr-boot.jar
+
       - name: Cache Document List
         uses: actions/cache@v1.2.1
         with:
           path: ~/DocumentInfo # 缓存还原的位置
           key: DocumentInfo # 键
           restore-keys: DocumentInfo # 寻找任何匹配的键来恢复
-
-      - name: Build with Maven # 编译包
-        run: mvn -B package --file pom.xml
-
-      - name: Run main class
-        run: java -jar target/okr-boot.jar
 
 
