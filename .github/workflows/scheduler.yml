@@ -60,11 +60,7 @@ jobs:
       - name: Build with Maven # 编译包
         run: mvn -B package --file pom.xml
 
-  execute:
-    needs:
-      - build
-    runs-on: ubuntu-18.04
-
-    steps: # 执行包
       - name: Run main class
         run: java -jar target/okr-boot.jar
+
+
