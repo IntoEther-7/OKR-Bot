@@ -16,6 +16,7 @@ public class DocumentCheckUtil {
         properties = new Properties();
         try {
             File file = new File("~/DocumentInfo/document.properties");
+            if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
             if (!file.exists()) file.createNewFile();
             properties.load(new FileReader(file, StandardCharsets.UTF_8));
         } catch (IOException e) {
