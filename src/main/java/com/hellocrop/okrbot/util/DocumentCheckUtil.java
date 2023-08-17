@@ -15,7 +15,7 @@ public class DocumentCheckUtil {
     public DocumentCheckUtil() {
         properties = new Properties();
         try {
-            File file = new File("~/DocumentInfo/document.properties");
+            File file = new File("~/.di/document.properties");
             if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
             if (!file.exists()) file.createNewFile();
             properties.load(new FileReader(file, StandardCharsets.UTF_8));
@@ -31,7 +31,7 @@ public class DocumentCheckUtil {
     public void insertDocumentIdThisWeek(String key, String documentId) {
         properties.setProperty(key, documentId);
         try {
-            properties.store(new FileWriter("~/DocumentInfo/document.properties", StandardCharsets.UTF_8), null);
+            properties.store(new FileWriter("~/.di/document.properties", StandardCharsets.UTF_8), null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
