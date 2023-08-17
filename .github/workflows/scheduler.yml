@@ -54,8 +54,8 @@ jobs:
         uses: actions/cache@v1.2.1
         with:
           path: ~/DocumentInfo # 缓存还原的位置
-          key: ${{ runner.os }}-DocumentInfo # 键
-          restore-keys: ${{ runner.os }}-DocumentInfo # 寻找任何匹配的键来恢复
+          key: DocumentInfo # 键
+          restore-keys: DocumentInfo # 寻找任何匹配的键来恢复
 
       - name: Build with Maven # 编译包
         run: mvn -B package --file pom.xml
