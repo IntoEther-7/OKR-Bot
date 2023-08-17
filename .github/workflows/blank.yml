@@ -9,9 +9,6 @@
 name: Schedule CI with Maven
 
 on:
-  #  push:
-  #    branches:
-  #      - master
   schedule:
     - cron: '0 * * * *'
     - cron: '10 * * * *'
@@ -19,6 +16,9 @@ on:
     - cron: '30 * * * *'
     - cron: '40 * * * *'
     - cron: '50 * * * *'
+  #  push:
+  #    branches:
+  #      - master
 
 
 jobs:
