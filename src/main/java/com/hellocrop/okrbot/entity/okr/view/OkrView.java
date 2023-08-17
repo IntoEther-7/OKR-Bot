@@ -26,9 +26,16 @@ public class OkrView {
 
         okrView.objectiveViews = new LinkedList<>();
         List<Objective> objectiveList = okr.getObjective_list();
-        for (int i = 0; i < objectiveList.size(); i++) {
-            Objective objective = objectiveList.get(i);
-            okrView.objectiveViews.add(ObjectiveView.fromObjective(objective, i + 1));
+        if (objectiveList.isEmpty()) {
+            // 没设置目标
+            // 没有用这个OKR
+            // 可以删了
+            return null;
+        } else {
+            for (int i = 0; i < objectiveList.size(); i++) {
+                Objective objective = objectiveList.get(i);
+                okrView.objectiveViews.add(ObjectiveView.fromObjective(objective, i + 1));
+            }
         }
 
         return okrView;

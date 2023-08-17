@@ -24,10 +24,14 @@ public class UserView {
         userView.block = TextBlock.mentionUserBlock(userView.userIdx);
 
         // 处理OkrList为List<OkrView>
+        // 无Okr -> okrViews = null
+        // 有Okr -> okrViews 为空
         userView.okrViews = new LinkedList<>();
         for (Okr okr : okrList.getOkr_list()) {
-            userView.okrViews.add(OkrView.fromOkr(okr));
+            OkrView okrView = OkrView.fromOkr(okr);
+            if (okrView != null) userView.okrViews.add(okrView);
         }
+        if (userView.okrViews.isEmpty()) userView.okrViews = null;
 
         return userView;
     }

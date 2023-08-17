@@ -12,11 +12,14 @@ import java.util.List;
 public class ProgressView {
     String pgsIdx;
     BlockMessage blockMessage; // 一个Block对象，已经封装好
+    String modify_time;
 
     public static ProgressView fromProgressRecord(ProgressRecord progressRecord) {
         ProgressView progressView = new ProgressView();
 
         progressView.pgsIdx = progressRecord.getProgress_id();
+
+        progressView.modify_time = progressRecord.getModify_time();
 
         progressView.blockMessage = BlockMessage.fromProgressRecord(progressRecord);
 

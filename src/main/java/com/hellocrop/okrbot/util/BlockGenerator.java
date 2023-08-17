@@ -12,8 +12,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+
+// TODO 过滤放在这里
 public class BlockGenerator {
     private static Integer idx;
+    private static DateUtil dateUtil = new DateUtil();
 
     public static void insertIntro(List<Block> content) {
         content.add(0, Block.builder().block_type(BlockType.TEXT.type).text(TextBlock.simpleTextBlock("本文档由办公自动化系统根据 OKR 的进展自动生成，用于向全员同步短期进展和计划，推荐大家对具体进展直接在此份文档中通过评论来讨论。")).build());
@@ -32,28 +35,28 @@ public class BlockGenerator {
 
         // 如果有信息，加入自身(User)和下层(Okr/显示未找到进展/显示未设置 OKR)信息
         // 加入用户信息
+        if (userView.getOkrViews() == null) {
+            // userView.getOkrViews() == null，没设置OKR
+            blocks.add(Block.builder().block_type(BlockType.TEXT.type).text(TextBlock.simpleTextBlock("本周期内 OKR 未设置。")).build());
+        } else {
+            // 接下来就是正常遍历
+            for (OkrView okrView : userView.getOkrViews()) {
+                // 对每个OkrView，遍历下层(Objective)
+                List<Block> ov = travelObjectiveView(okrView);
+                // 如果有信息，加入自身(OKR)和下层(O)信息
+                if (!ov.isEmpty()) {
+                    blocks.add(Block.builder().block_type(BlockType.HEADING4.type).heading4(okrView.getBlock()).build());
+                    blocks.addAll(ov);
+                }
+            }
 
-
-        // 无Okr -> "未设置 OKR" -> 只包含user信息
-        // TODO: 如果需要显示，需要修改上层逻辑
-
-        // 有Okr -> 无进展数据 -> 第二个block为null
-        // TODO: 如果需要显示，需要修改上层逻辑
-
-        for (OkrView okrView : userView.getOkrViews()) {
-            // 对每个OkrView，遍历下层(Objective)
-            List<Block> ov = travelObjectiveView(okrView);
-            // 如果有信息，加入自身(OKR)和下层(O)信息
-            if (!ov.isEmpty()) {
-                blocks.add(Block.builder().block_type(BlockType.HEADING4.type).heading4(okrView.getBlock()).build());
-                blocks.addAll(ov);
+            if (blocks.isEmpty()) {
+                // userView.getOkrViews() 为空，没有进展
+                blocks.add(Block.builder().block_type(BlockType.TEXT.type).text(TextBlock.simpleTextBlock("未找到本周进展。")).build());
             }
         }
 
-        // 如果有信息，加入自身(U)和下层(OKR)信息
-        if (!blocks.isEmpty())
-            blocks.add(0, Block.builder().block_type(BlockType.HEADING3.type).heading3(TextBlock.mentionUserBlock(userView.getUserIdx())).build());
-
+        blocks.add(0, Block.builder().block_type(BlockType.HEADING3.type).heading3(TextBlock.mentionUserBlock(userView.getUserIdx())).build());
         idx = null;
 
         return blocks;
@@ -122,7 +125,7 @@ public class BlockGenerator {
 
         // 底层，加入O和自身信息（Progress）
         for (ProgressView progressView : objectiveView.getProgressViews()) {
-            if (!progressView.getBlockMessage().getChildren().isEmpty()) {
+            if (!progressView.getBlockMessage().getChildren().isEmpty() && dateUtil.inThisWeek(progressView.getModify_time())) {
                 // 加入正文
                 blocks.addAll(progressView.getBlockMessage().getChildren());
             }
@@ -136,7 +139,7 @@ public class BlockGenerator {
 
         // 底层，加入PR和自身信息（Progress）
         for (ProgressView progressView : keyResultView.getProgressViews()) {
-            if (!progressView.getBlockMessage().getChildren().isEmpty()) {
+            if (!progressView.getBlockMessage().getChildren().isEmpty() && dateUtil.inThisWeek(progressView.getModify_time())) {
                 // 加入正文
                 blocks.addAll(progressView.getBlockMessage().getChildren());
             }

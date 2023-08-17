@@ -13,6 +13,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.text.Collator;
 import java.util.*;
 
 /**
@@ -37,31 +38,37 @@ public class OkrService {
         JsonString auth = new AuthMapper().auth(appId, appSecret);
         tenant_access_token = "Bearer " + auth.get("tenant_access_token").string();
 
-        List<String> userIdxList = getAllEmployee();
+        Map<String, String> allEmployee = getAllEmployee();
 
         // TODO: 根据用户组过滤
-        filterUser(userIdxList);
+        filterUser(allEmployee);
 
-        List<Block> content = new LinkedList<>();
-        for (String userIdx : userIdxList) {
+        Comparator<Object> comparator = Collator.getInstance(Locale.CHINA);
+
+        TreeMap<String, List<Block>> content = new TreeMap<>(comparator);
+        for (Map.Entry<String,String> entry : allEmployee.entrySet()) {
+            String userIdx = entry.getKey();
+            String userName = entry.getValue();
             // 根据人员获取OKR
             JsonString okrsByEmployer = getOkrsByEmployer(userIdx);
             OkrList okrList = deserializationOKR(userIdx, okrsByEmployer);
 
             // 解析
-            UserView userView = parseOne(okrList, true);
+            UserView userView = parseOne(okrList);
 
             // 构建这个人的blocks
-            content.addAll(constructBlock(userView));
+            content.put(userName, constructBlock(userView));
         }
+
+        List<Block> blocks = sortMap(content);
 
         // 插入序言
         // 本文档由办公自动化系统根据 OKR 的进展自动生成，用于向全员同步短期进展和计划，如需评论，可点击具体链接跳转到 OKR 系统进行评论和转发。
         // 最后更新时间：2023/01/01 22:00
-        BlockGenerator.insertIntro(content);
+        BlockGenerator.insertIntro(blocks);
 
         // 分割blocks
-        List<BlockMessage> blockMessages = splitBlocks(50, content);
+        List<BlockMessage> blockMessages = splitBlocks(50, blocks);
 
         // 知道是需要更新哪个文档
         // String documentId = getDocumentId();
@@ -84,14 +91,20 @@ public class OkrService {
 
         // 发送给对应的人
         // "誓嘉": "ou_05ab03d6f1fba287a2aa4e1decde4f12"
+        // new MessageMapper().send2Person(tenant_access_token, "ou_05ab03d6f1fba287a2aa4e1decde4f12", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
         // "尘央": "ou_80f012ab640bde78bcc18daa378a4f31"
+        // new MessageMapper().send2Person(tenant_access_token, "ou_80f012ab640bde78bcc18daa378a4f31", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
         // "哈克": "ou_d37e7a78deaefb355cc3390f224e5900"
         new MessageMapper().send2Person(tenant_access_token, "ou_d37e7a78deaefb355cc3390f224e5900", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
-        new MessageMapper().send2Person(tenant_access_token, "ou_80f012ab640bde78bcc18daa378a4f31", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
-        new MessageMapper().send2Person(tenant_access_token, "ou_05ab03d6f1fba287a2aa4e1decde4f12", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
     }
 
-    private List<String> getAllEmployee() throws UnirestException, IOException {
+    private List<Block> sortMap(TreeMap<String, List<Block>> map) {
+        List<Block> blocks = new LinkedList<>();
+        map.forEach((key, value) -> blocks.addAll(value));
+        return blocks;
+    }
+
+    private Map<String, String> getAllEmployee() throws UnirestException, IOException {
         // 获取部门信息
         JsonString allDepartment = new DepartmentMapper().allDepartment(tenant_access_token);
         JsonString departments = allDepartment.get("data").get("items");
@@ -102,7 +115,7 @@ public class OkrService {
         }
 
         // 根据部门查询所有人员信息
-        List<String> employeeIdList = new LinkedList<>();
+        HashMap<String, String> map = new HashMap<>();
         EmployerMapper employerMapper = new EmployerMapper();
         for (String departmentId : departmentIdList) {
             JsonString personsByDepartment = employerMapper.getPersonsByDepartment(tenant_access_token, departmentId);
@@ -110,10 +123,9 @@ public class OkrService {
             // 查询人员
             JsonString employee = personsByDepartment.get("data").get("items");
             for (int i = 0; i < employee.getNode().size(); i++) {
-                employeeIdList.add(employee.get(i).get("open_id").string());
+                map.put(employee.get(i).get("open_id").string(), employee.get(i).get("name").string());
             }
-        }
-        return employeeIdList;
+        } return map;
     }
 
 
@@ -124,7 +136,7 @@ public class OkrService {
 
     // 处理OKR数据, 拿到目标数据
     private OkrList deserializationOKR(String userIdx, JsonString okrJsonString) throws JsonProcessingException {
-        List<Okr> okrs = null;
+        List<Okr> okrs;
 
         okrs = JsonString.objectMapper.readValue(okrJsonString.get("data").get("okr_list").getString(), new TypeReference<List<Okr>>() {
         });
@@ -137,43 +149,41 @@ public class OkrService {
      * 解析一个人的OkrList
      *
      * @param okrList
-     * @param filter
      * @throws UnirestException
      * @throws JsonProcessingException
      */
-    private UserView parseOne(OkrList okrList, boolean filter) throws UnirestException, JsonProcessingException {
+    private UserView parseOne(OkrList okrList) throws UnirestException, JsonProcessingException {
 
         ProgressMapper progressMapper = new ProgressMapper();
 
         // 获取进展，填入Objective和KeyResult
-        for (Okr okr : okrList.getOkr_list()) {
+        for (Iterator<Okr> iterator = okrList.getOkr_list().iterator(); iterator.hasNext(); ) {
+            Okr okr = iterator.next();
             // okr -> objective
             List<Objective> objectives = okr.getObjective_list();
-            for (Objective objective : objectives) {
-                // objective -> ProgressRecordSimplify
-                objective.setProgressRecords(new LinkedList<>());
-                for (ProgressRecordSimplify progressRecordSimplify : objective.getProgress_record_list()) {
-                    // ProgressRecordSimplify -> idx
-                    ProgressRecord progressRecord = progressMapper.getProgress(tenant_access_token, progressRecordSimplify.getId());
-                    if (filter && !dateUtil.inThisWeek(progressRecord.getModify_time())) {
-                        continue;
-                    }
-                    objective.getProgressRecords().add(progressRecord);
-                }
-                // objective -> KeyResult
-                for (KeyResult keyResult : objective.getKr_list()) {
-                    // KeyResult -> ProgressRecordSimplify
-                    keyResult.setProgressRecords(new LinkedList<>());
-                    for (ProgressRecordSimplify progressRecordSimplify : keyResult.getProgress_record_list()) {
+            if (objectives.isEmpty()) iterator.remove();
+            else {
+                for (Objective objective : objectives) {
+                    // objective -> ProgressRecordSimplify
+                    objective.setProgressRecords(new LinkedList<>());
+                    for (ProgressRecordSimplify progressRecordSimplify : objective.getProgress_record_list()) {
                         // ProgressRecordSimplify -> idx
                         ProgressRecord progressRecord = progressMapper.getProgress(tenant_access_token, progressRecordSimplify.getId());
-                        if (filter && !dateUtil.inThisWeek(progressRecord.getModify_time())) {
-                            continue;
+                        objective.getProgressRecords().add(progressRecord);
+                    }
+                    // objective -> KeyResult
+                    for (KeyResult keyResult : objective.getKr_list()) {
+                        // KeyResult -> ProgressRecordSimplify
+                        keyResult.setProgressRecords(new LinkedList<>());
+                        for (ProgressRecordSimplify progressRecordSimplify : keyResult.getProgress_record_list()) {
+                            // ProgressRecordSimplify -> idx
+                            ProgressRecord progressRecord = progressMapper.getProgress(tenant_access_token, progressRecordSimplify.getId());
+                            keyResult.getProgressRecords().add(progressRecord);
                         }
-                        keyResult.getProgressRecords().add(progressRecord);
                     }
                 }
             }
+
         }
 
         // 将OkrList转变为UserView
@@ -220,21 +230,22 @@ public class OkrService {
         return documentId;
     }
 
-    private void filterUser(List<String> userList) throws UnirestException, JsonProcessingException {
-        // TODO: 实现过滤
+    private void filterUser(Map<String, String> userMap) throws UnirestException, JsonProcessingException {
+        // 实现过滤
         // 用户组ID
-        // g7b3ecgeac8f34a8
+        // 暂无 OKR 用户组: "g7b3ecgeac8f34a8"
+        // 实习生用户组: "3e3e6e16c4275fd1"
 
         EmployerMapper employerMapper = new EmployerMapper();
 
-        Iterator<String> iterator = userList.iterator();
+        Iterator<Map.Entry<String, String>> iterator = userMap.entrySet().iterator();
         while (iterator.hasNext()) {
-            String openId = iterator.next();
-            List<String> strings = employerMapper.belongUserGroupId(tenant_access_token, openId);
+            Map.Entry<String, String> next = iterator.next();
+            List<String> strings = employerMapper.belongUserGroupId(tenant_access_token, next.getKey());
 
             boolean remove = false;
             for (String string : strings) {
-                if (string.equals("g7b3ecgeac8f34a8")) {
+                if (string.equals("g7b3ecgeac8f34a8") || string.equals("3e3e6e16c4275fd1")) {
                     remove = true;
                     break;
                 }
