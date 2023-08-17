@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
@@ -16,7 +15,7 @@ public class DocumentCheckUtil {
     public DocumentCheckUtil() {
         properties = new Properties();
         try {
-            File file = new File("src/main/resources/document.properties");
+            File file = new File("~/DocumentInfo/document.properties");
             if (!file.exists()) file.createNewFile();
             properties.load(new FileReader(file, StandardCharsets.UTF_8));
         } catch (IOException e) {
@@ -31,7 +30,7 @@ public class DocumentCheckUtil {
     public void insertDocumentIdThisWeek(String key, String documentId) {
         properties.setProperty(key, documentId);
         try {
-            properties.store(new FileWriter("src/main/resources/document.properties", StandardCharsets.UTF_8), null);
+            properties.store(new FileWriter("~/DocumentInfo/document.properties", StandardCharsets.UTF_8), null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
