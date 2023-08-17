@@ -9,16 +9,11 @@
 name: Schedule CI with Maven
 
 on:
-  schedule:
-    - cron: '0 * * * *'
-    - cron: '10 * * * *'
-    - cron: '20 * * * *'
-    - cron: '30 * * * *'
-    - cron: '40 * * * *'
-    - cron: '50 * * * *'
   #  push:
   #    branches:
   #      - master
+  schedule:
+    - cron: '0,10,20,30,40,50 * * * *'
 
 
 jobs:
@@ -44,7 +39,7 @@ jobs:
       - name: Cache Document List
         uses: actions/cache@v1.2.1
         with:
-          path: src/main/resources/DocInfo # 缓存还原的位置
+          path: src/main/resources/DocInfo/document.properties # 缓存还原的位置
           key: doc_info # 键
           restore-keys: doc_info # 寻找任何匹配的键来恢复
 
