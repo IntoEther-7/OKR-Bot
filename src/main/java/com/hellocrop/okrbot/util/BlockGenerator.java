@@ -45,7 +45,7 @@ public class BlockGenerator {
                 List<Block> ov = travelObjectiveView(okrView);
                 // 如果有信息，加入自身(OKR)和下层(O)信息
                 if (!ov.isEmpty()) {
-                    blocks.add(Block.builder().block_type(BlockType.HEADING4.type).heading4(okrView.getBlock()).build());
+//                    blocks.add(Block.builder().block_type(BlockType.HEADING4.type).heading4(okrView.getBlock()).build());
                     blocks.addAll(ov);
                 }
             }
