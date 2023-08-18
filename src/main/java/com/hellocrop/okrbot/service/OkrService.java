@@ -41,12 +41,12 @@ public class OkrService {
         Map<String, String> allEmployee = getAllEmployee();
 
         // TODO: 根据用户组过滤
-         filterUser(allEmployee);
+        filterUser(allEmployee);
 
         Comparator<Object> comparator = Collator.getInstance(Locale.CHINA);
 
         TreeMap<String, List<Block>> content = new TreeMap<>(comparator);
-        for (Map.Entry<String,String> entry : allEmployee.entrySet()) {
+        for (Map.Entry<String, String> entry : allEmployee.entrySet()) {
             String userIdx = entry.getKey();
             String userName = entry.getValue();
             // 根据人员获取OKR
@@ -86,14 +86,15 @@ public class OkrService {
         for (BlockMessage blockMessage : blockMessages) {
             // JsonString.objectMapper.writeValueAsString(blockMessage)
             blockMessage.check();
+            log.info(JsonString.objectMapper.writeValueAsString(blockMessage));
             log.info(documentMapper.insertDocument(tenant_access_token, documentId, blockMessage).getString());
         }
 
         // 发送给对应的人
         // "誓嘉": "ou_05ab03d6f1fba287a2aa4e1decde4f12"
-         new MessageMapper().send2Person(tenant_access_token, "ou_05ab03d6f1fba287a2aa4e1decde4f12", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
+        new MessageMapper().send2Person(tenant_access_token, "ou_05ab03d6f1fba287a2aa4e1decde4f12", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
         // "尘央": "ou_80f012ab640bde78bcc18daa378a4f31"
-         new MessageMapper().send2Person(tenant_access_token, "ou_80f012ab640bde78bcc18daa378a4f31", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
+        new MessageMapper().send2Person(tenant_access_token, "ou_80f012ab640bde78bcc18daa378a4f31", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
         // "哈克": "ou_d37e7a78deaefb355cc3390f224e5900"
         new MessageMapper().send2Person(tenant_access_token, "ou_d37e7a78deaefb355cc3390f224e5900", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
     }
@@ -125,7 +126,8 @@ public class OkrService {
             for (int i = 0; i < employee.getNode().size(); i++) {
                 map.put(employee.get(i).get("open_id").string(), employee.get(i).get("name").string());
             }
-        } return map;
+        }
+        return map;
     }
 
 

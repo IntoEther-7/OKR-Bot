@@ -49,9 +49,12 @@ public class Block {
                 Map<String, TextBlock> map = TextBlock.fromContentParagraph(contentBlockElement.getParagraph());
                 for (Map.Entry<String, TextBlock> entry : map.entrySet()) {
                     switch (entry.getKey()) {
-                        case "text" -> block = Block.builder().block_type(BlockType.TEXT.type).text(entry.getValue()).build(); //block.text = entry.getValue()
-                        case "number" -> block = Block.builder().block_type(BlockType.ORDERED.type).ordered(entry.getValue()).build(); // block.ordered = entry.getValue()
-                        case "bullet" -> block = Block.builder().block_type(BlockType.BULLET.type).bullet(entry.getValue()).build(); // block.bullet = entry.getValue()
+                        case "text" ->
+                                block = Block.builder().block_type(BlockType.TEXT.type).text(entry.getValue()).build(); //block.text = entry.getValue()
+                        case "number" ->
+                                block = Block.builder().block_type(BlockType.ORDERED.type).ordered(entry.getValue()).build(); // block.ordered = entry.getValue()
+                        case "bullet" ->
+                                block = Block.builder().block_type(BlockType.BULLET.type).bullet(entry.getValue()).build(); // block.bullet = entry.getValue()
                         case "checkBox" -> block = null;
                         case "checkedBox" -> block = null;
                         case "indent" -> block = null;
@@ -68,6 +71,7 @@ public class Block {
     }
 
     public void check() throws IllegalAccessException {
+        assert this != null;
         Field[] fields = this.getClass().getFields();
 
         assert block_type != null;

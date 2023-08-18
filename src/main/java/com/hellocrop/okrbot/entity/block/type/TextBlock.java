@@ -33,7 +33,8 @@ public class TextBlock {
         TextBlock textBlock = new TextBlock();
 
         for (ContentParagraphElement contentParagraphElement : contentParagraph.getElements()) {
-            textBlock.elements.add(TextElement.fromContentParagraphElement(contentParagraphElement));
+            TextElement textElement = TextElement.fromContentParagraphElement(contentParagraphElement);
+            if (textElement != null) textBlock.elements.add(textElement);
         }
 
         if (contentParagraph.getStyle() != null && contentParagraph.getStyle().getList() != null && contentParagraph.getStyle().getList().getType() != null) {

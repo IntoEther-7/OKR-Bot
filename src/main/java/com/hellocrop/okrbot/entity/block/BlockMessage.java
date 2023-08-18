@@ -35,6 +35,7 @@ public class BlockMessage {
     }
 
     public void check() {
+        assert this != null;
         for (Block child : children) {
             try {
                 child.check();

@@ -1,5 +1,6 @@
 package com.hellocrop.okrbot.entity.block.type.textelment;
 
+import com.hellocrop.okrbot.entity.block.type.Link;
 import com.hellocrop.okrbot.entity.block.type.TextElementStyle;
 import com.hellocrop.okrbot.entity.contentblock.ContentTextRun;
 import lombok.Data;
@@ -24,6 +25,13 @@ public class TextRun {
     public TextRun(String content, TextElementStyle text_element_style) {
         setContent(content);
         this.text_element_style = text_element_style;
+    }
+
+    public static TextRun textAndLink(String content, String url) {
+        TextRun textRun = new TextRun();
+        textRun.content = content;
+        textRun.text_element_style = TextElementStyle.builder().link(new Link(url)).build();
+        return textRun;
     }
 
     public static TextRun fromContenTextRunBlock(ContentTextRun contentTextRun) {
