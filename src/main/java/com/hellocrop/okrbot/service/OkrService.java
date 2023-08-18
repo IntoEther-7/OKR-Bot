@@ -41,7 +41,7 @@ public class OkrService {
         Map<String, String> allEmployee = getAllEmployee();
 
         // TODO: 根据用户组过滤
-        filterUser(allEmployee);
+         filterUser(allEmployee);
 
         Comparator<Object> comparator = Collator.getInstance(Locale.CHINA);
 
