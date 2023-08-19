@@ -73,12 +73,15 @@ public class OkrService {
         // 知道是需要更新哪个文档
         // String documentId = getDocumentId();
         String documentId;
+        boolean init;
         DocumentMapper documentMapper = new DocumentMapper();
         Map<String, String> documentMap = documentMapper.documentMap(tenant_access_token);
         if (documentMap.containsKey(documentName)) {
             documentId = documentMap.get(documentName);
+            init = false;
         } else {
             documentId = documentMapper.newDocument(tenant_access_token, documentName);
+            init = true;
         }
 
         // 发送到对应文档
@@ -90,13 +93,15 @@ public class OkrService {
             log.info(documentMapper.insertDocument(tenant_access_token, documentId, blockMessage).getString());
         }
 
-        // 发送给对应的人
-        // "誓嘉": "ou_05ab03d6f1fba287a2aa4e1decde4f12"
-        new MessageMapper().send2Person(tenant_access_token, "ou_05ab03d6f1fba287a2aa4e1decde4f12", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
-        // "尘央": "ou_80f012ab640bde78bcc18daa378a4f31"
-        new MessageMapper().send2Person(tenant_access_token, "ou_80f012ab640bde78bcc18daa378a4f31", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
-        // "哈克": "ou_d37e7a78deaefb355cc3390f224e5900"
-        new MessageMapper().send2Person(tenant_access_token, "ou_d37e7a78deaefb355cc3390f224e5900", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
+        if (init) {
+            // 发送给对应的人
+            // "誓嘉": "ou_05ab03d6f1fba287a2aa4e1decde4f12"
+            new MessageMapper().send2Person(tenant_access_token, "ou_05ab03d6f1fba287a2aa4e1decde4f12", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
+            // "尘央": "ou_80f012ab640bde78bcc18daa378a4f31"
+            new MessageMapper().send2Person(tenant_access_token, "ou_80f012ab640bde78bcc18daa378a4f31", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
+            // "哈克": "ou_d37e7a78deaefb355cc3390f224e5900"
+            new MessageMapper().send2Person(tenant_access_token, "ou_d37e7a78deaefb355cc3390f224e5900", "https://automq66.feishu.cn/docx/%s".formatted(documentId));
+        }
     }
 
     private List<Block> sortMap(TreeMap<String, List<Block>> map) {
