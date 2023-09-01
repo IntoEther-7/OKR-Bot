@@ -21,8 +21,8 @@ public class AuthMapper {
         Unirest.setTimeouts(0, 0);
         HttpResponse<String> response = Unirest.post("https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal")
                 .header("Content-Type", "application/x-www-form-urlencoded")
-                .field("app_id", "cli_a45f78cb4a79500e")
-                .field("app_secret", "9ZIvC5EoYrqHqMSBE6agV62t7IWBrvzT")
+                .field("app_id", appId)
+                .field("app_secret", appSecret)
                 .asString();
 
 
